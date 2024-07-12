@@ -1,0 +1,37 @@
+template:
+  bootstrap: 5
+title: theRmalUAV
+reference:
+- title: General
+  desc: Get necessary information and report end results
+  contents:
+  - T_uav_info
+  - T_uav_sensors
+  - T_uav_report
+  - T_uav_export
+- title: Position
+  desc: Calculate, view and refine sensor locations
+  contents:
+  - T_uav_pos_sensor
+  - T_uav_pos_view
+  - T_uav_prep_coreg
+  - T_uav_pos_coreg
+- title: Clean
+  desc: Clean thermal datasets based on overlap and or sharpness
+  contents:
+  - T_uav_clean_thresh
+  - T_uav_clean_persec
+  - T_uav_clean_reduc
+- title: Correct
+  desc: Correct thermal datasets for atmosphere, emissivity and in flight fluctuations
+  contents:
+  - T_uav_corr_atm
+  - T_uav_corr_emis
+  - T_uav_corr_smooth
+  - T_uav_corr_ortho
+- title: Class
+  desc: S4 class in which the information and data is stored within the R-environment
+  contents:
+  - Thermal.UAV-Class
+
+
