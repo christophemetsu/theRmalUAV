@@ -13,7 +13,7 @@ This package is designed to correct thermal UAV data. It comprises data cleaning
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://christophemetsu.github.io/Test_24052024/}
+  \item \url{}
 }
 
 }
