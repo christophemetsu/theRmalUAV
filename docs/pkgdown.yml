@@ -1,12 +1,58 @@
 pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
+reference:
+  ThermalUAV-Class: reference/ThermalUAV-Class.html
+  tuav_cameras: reference/tuav_cameras.html
+  tuav_create: reference/tuav_create.html
+  tuav_correct: reference/tuav_correct.html
+  tuav_export: reference/tuav_export.html
+  tuav_emis: reference/tuav_emis.html
+  tuav_report: reference/tuav_report.html
+  tuav_loc: reference/tuav_loc.html
+  tuav_view: reference/tuav_view.html
+  coreg_prep: reference/coreg_prep.html
+  tuav_coreg: reference/tuav_coreg.html
+  tuav_sharp: reference/tuav_sharp.html
+  tuav_sharp_thresh: reference/tuav_sharp_thresh.html
+  tuav_persec: reference/tuav_persec.html
+  tuav_reduc: reference/tuav_reduc.html
+  tuav_smooth: reference/tuav_smooth.html
+  ortho_correct: reference/ortho_correct.html
+  tuav_dji: reference/tuav_dji.html
+  dji_init: reference/dji_init.html
+  sim_correct: reference/sim_correct.html
 articles:
-  Image-based_Workflow: Image-based_Workflow.html
-  Orthomosaic-based_Workflow: Orthomosaic-based_Workflow.html
-  DJI_cameras: DJI_cameras.html
-last_built: 2025-02-27T11:12Z
+  Image-based_Workflow: articles/Image-based_Workflow.html
+  Orthomosaic-based_Workflow: articles/Orthomosaic-based_Workflow.html
+  DJI_cameras: articles/DJI_cameras.html
+last_built: 2025-02-27T13:22Z
 urls:
   reference: https://christophemetsu.github.io/theRmalUAV/reference
   article: https://christophemetsu.github.io/theRmalUAV/articles
+  ThermalUAV-Class: https://christophemetsu.github.io/theRmalUAV/reference/ThermalUAV-Class.html
+  tuav_cameras: https://christophemetsu.github.io/theRmalUAV/reference/tuav_cameras.html
+  tuav_create: https://christophemetsu.github.io/theRmalUAV/reference/tuav_create.html
+  tuav_correct: https://christophemetsu.github.io/theRmalUAV/reference/tuav_correct.html
+  tuav_export: https://christophemetsu.github.io/theRmalUAV/reference/tuav_export.html
+  tuav_emis: https://christophemetsu.github.io/theRmalUAV/reference/tuav_emis.html
+  tuav_report: https://christophemetsu.github.io/theRmalUAV/reference/tuav_report.html
+  tuav_loc: https://christophemetsu.github.io/theRmalUAV/reference/tuav_loc.html
+  tuav_view: https://christophemetsu.github.io/theRmalUAV/reference/tuav_view.html
+  coreg_prep: https://christophemetsu.github.io/theRmalUAV/reference/coreg_prep.html
+  tuav_coreg: https://christophemetsu.github.io/theRmalUAV/reference/tuav_coreg.html
+  tuav_sharp: https://christophemetsu.github.io/theRmalUAV/reference/tuav_sharp.html
+  tuav_sharp_thresh: https://christophemetsu.github.io/theRmalUAV/reference/tuav_sharp_thresh.html
+  tuav_persec: https://christophemetsu.github.io/theRmalUAV/reference/tuav_persec.html
+  tuav_reduc: https://christophemetsu.github.io/theRmalUAV/reference/tuav_reduc.html
+  tuav_smooth: https://christophemetsu.github.io/theRmalUAV/reference/tuav_smooth.html
+  ortho_correct: https://christophemetsu.github.io/theRmalUAV/reference/ortho_correct.html
+  tuav_dji: https://christophemetsu.github.io/theRmalUAV/reference/tuav_dji.html
+  dji_init: https://christophemetsu.github.io/theRmalUAV/reference/dji_init.html
+  sim_correct: https://christophemetsu.github.io/theRmalUAV/reference/sim_correct.html
+  Image-based_Workflow: https://christophemetsu.github.io/theRmalUAV/articles/Image-based_Workflow.html
+  Orthomosaic-based_Workflow: https://christophemetsu.github.io/theRmalUAV/articles/Orthomosaic-based_Workflow.html
+  DJI_cameras: https://christophemetsu.github.io/theRmalUAV/articles/DJI_cameras.html
+
+
 

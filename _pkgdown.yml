@@ -8,77 +8,50 @@ reference:
   desc: All the basic and additional functions within the image-based workflow
 - subtitle: ThermalUAV Object
   desc: S4 class in which the information and data is stored within the R-environment
-  contents: ThermalUAV-Class
+  contents:
+    - ThermalUAV-Class
 - subtitle: Basic functions
   desc: The basic steps in the image-based workflow, create, correct and export
   contents:
-  - tuav_cameras: reference/tuav_cameras.html
-  - tuav_create: reference/tuav_create.html
-  - tuav_correct: reference/tuav_correct.html
-  - tuav_export: reference/tuav_export.html
-  - tuav_emis: reference/tuav_emis.html
-  - tuav_report: reference/tuav_report.html
+    - tuav_cameras
+    - tuav_create
+    - tuav_correct
+    - tuav_export
+    - tuav_emis
+    - tuav_report
 - subtitle: Position functions
   desc: Calculate, view and optimize camera locations
   contents:
-  - tuav_loc: reference/tuav_loc.html
-  - tuav_view: reference/tuav_view.html
-  - coreg_prep: reference/coreg_prep.html
-  - tuav_coreg: reference/tuav_coreg.html
+    - tuav_loc
+    - tuav_view
+    - coreg_prep
+    - tuav_coreg
 - subtitle: Cleaning functions
   desc: Clean thermal datasets based on overlap and or sharpness
   contents:
-  - tuav_sharp: reference/tuav_sharp.html
-  - tuav_sharp_thresh: reference/tuav_sharp_thresh.html
-  - tuav_persec: reference/tuav_perec.html
-  - tuav_reduc: reference/tuav_reduc.html
-  - tuav_smooth: reference/tuav_smooth.html
+    - tuav_sharp
+    - tuav_sharp_thresh
+    - tuav_persec
+    - tuav_reduc
+    - tuav_smooth
 - title: Orthomosaic-based workflow
   desc: Correct at-sensor temperature orthomosaics
-  contents: ortho_correct: reference/ortho_correct.html
+  contents:
+    - ortho_correct
 - title: Extra's
   desc: Functions that do not directly belong to a workflow, but support or improve
     understanding
   contents:
-  - tuav_dji: reference/tuav_dji.html
-  - dji_init: reference/dji_init.html
-  - sim_correct: reference/sim_correct.html
+    - tuav_dji
+    - dji_init
+    - sim_correct
 articles:
 - title: Examples of the different workflows
   contents:
-  - Image-based_Workflow: articles/Image-based_Workflow.html
-  - Orthomosaic-based_Workflow: articles/Orthomosaic-based_Workflow.html
-  - DJI_cameras: articles/DJI_cameras.html
-
+    - Image-based_Workflow
+    - Orthomosaic-based_Workflow
+    - DJI_cameras
 navbar:
   structure:
     left:  [home, reference, articles]
-    right: [github]
-
-  components:
-    home:
-      text: "Home"
-      href: index.html  # Link to homepage
-
-    reference:
-      text: "Reference"
-      href: reference/index.html  # Link to function docs
-
-    articles:
-      text: "Articles"
-      href: articles/index.html
-      menu:
-        - text: "Image-based Workflow"
-          href: articles/Image-based_Workflow.html
-        - text: "Orthomosaic-based Workflow"
-          href: articles/Orthomosaic-based_Workflow.html
-        - text: "Working with DJI cameras"
-          href: articles/DJI_cameras.html
-
-    github:
-      href: https://github.com/christophemetsu/theRmalUAV
-
-
-
-
-
+    right: [search]
