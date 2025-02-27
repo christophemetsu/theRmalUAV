@@ -25,7 +25,7 @@ The goal of theRmalUAV is to clean and correct raw thermal UAV data.
 There are two workflows that can be followed:
 
 A) **Image-based Workflow:** to perform corrections at image level
-B) **Orthomosaic-based Workflow:** to perform corrections on an orthomosaic containing uncorrected brightness temperatures
+B) **Orthomosaic-based Workflow:** to perform corrections on an orthomosaic containing uncorrected at-sensor temperatures
 
 ```{r, echo = F, figures-side, fig.show="hold",out.width="100%"}
 knitr::include_graphics('./man/figures/Workflow_both.png')
