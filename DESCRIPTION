@@ -6,7 +6,7 @@ Author: Christophe Metsu
 Maintainer: Christophe Metsu <christophe.metsu@kuleuven.be>
 Description: This package is designed to correct thermal UAV data. 
     It comprises data cleaning, image reduction, caluclating overlap, atmospheric corrections, accounting for temperature fluctuations during the flight, emissivity corrections ect.
-    The corrected data will be stored as tiff-file with updated exifdata, ready to implement in commercial structure from motion softwares. 
+    The corrected data will be stored as tiff-file with updated exifdata, ready to implement in commercial photogrammetry softwares. 
     It furthermore provides the opportunity to optimize thermal camera positions using coregistrated high resolution cameras.
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -19,6 +19,7 @@ Imports:
     knitr,
     methods,
     progress,
+    reticulate,
     rmarkdown,
     stats,
     stringr,
@@ -32,3 +33,4 @@ Suggests:
 Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
+VignetteBuilder: knitr

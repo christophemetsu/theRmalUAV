@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">theRmalUAV</a>
 
@@ -20,6 +20,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/index.html">Articles</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -35,127 +38,14 @@
     </div>
 
     <div class="section level2">
-      <h2 id="general">General<a class="anchor" aria-label="anchor" href="#general"></a></h2>
+      <h2 id="image-based-workflow">Image-based workflow<a class="anchor" aria-label="anchor" href="#image-based-workflow"></a></h2>
       
-      <p class="section-desc"></p><p>Get necessary information and report end results</p>
+      <p class="section-desc"></p><p>All the basic and additional functions within the image-based workflow</p>
 
       
-    </div><div id="" class="section level2">
+    </div><div class="section level2">
       
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="T_uav_info.html">T_uav_info()</a></code> 
-        </dt>
-        <dd>Gets all the necessary info</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_sensors.html">T_uav_sensors()</a></code> 
-        </dt>
-        <dd>Provides a list of supported sensors</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_report.html">T_uav_report()</a></code> 
-        </dt>
-        <dd>Makes a TheRmalUAV report</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_export.html">T_uav_export()</a></code> 
-        </dt>
-        <dd>Exports thermal data as tiff-files</dd>
-      </dl></div><div class="section level2">
-      <h2 id="position">Position<a class="anchor" aria-label="anchor" href="#position"></a></h2>
-      
-      <p class="section-desc"></p><p>Calculate, view and refine sensor locations</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="T_uav_pos_sensor.html">T_uav_pos_sensor()</a></code> 
-        </dt>
-        <dd>Gets the information about the locations of the cameras</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_pos_view.html">T_uav_pos_view()</a></code> 
-        </dt>
-        <dd>Shows the cameras/image extents on an interactive map</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_prep_coreg.html">T_uav_prep_coreg()</a></code> 
-        </dt>
-        <dd>Prepares data for coregistration</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_pos_coreg.html">T_uav_pos_coreg()</a></code> 
-        </dt>
-        <dd>Coregister locations with another camera</dd>
-      </dl></div><div class="section level2">
-      <h2 id="clean">Clean<a class="anchor" aria-label="anchor" href="#clean"></a></h2>
-      
-      <p class="section-desc"></p><p>Clean thermal datasets based on overlap and or sharpness</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="T_uav_clean_thresh.html">T_uav_clean_thresh()</a></code> 
-        </dt>
-        <dd>Get sharpness threshold</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_clean_persec.html">T_uav_clean_persec()</a></code> 
-        </dt>
-        <dd>Keeps the best image per second</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_clean_reduc.html">T_uav_clean_reduc()</a></code> 
-        </dt>
-        <dd>Clean the dataset based on overlap or sharpness</dd>
-      </dl></div><div class="section level2">
-      <h2 id="correct">Correct<a class="anchor" aria-label="anchor" href="#correct"></a></h2>
-      
-      <p class="section-desc"></p><p>Correct thermal datasets for atmosphere, emissivity and in flight fluctuations</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="T_uav_corr_atm.html">T_uav_corr_atm()</a></code> 
-        </dt>
-        <dd>Computes atmospheric corrections</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_corr_emis.html">T_uav_corr_emis()</a></code> 
-        </dt>
-        <dd>Corrects for emissivity</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_corr_smooth.html">T_uav_corr_smooth()</a></code> 
-        </dt>
-        <dd>Smooths thermal data</dd>
-      </dl><dl><dt>
-          
-          <code><a href="T_uav_corr_ortho.html">T_uav_corr_ortho()</a></code> 
-        </dt>
-        <dd>Atmospheric and emissivity correction for othomosaics</dd>
-      </dl></div><div class="section level2">
-      <h2 id="class">Class<a class="anchor" aria-label="anchor" href="#class"></a></h2>
-      
+      <h3 id="thermaluav-object">ThermalUAV Object<a class="anchor" aria-label="anchor" href="#thermaluav-object"></a></h3>
       <p class="section-desc"></p><p>S4 class in which the information and data is stored within the R-environment</p>
 
       
@@ -166,9 +56,159 @@
 
       <dl><dt>
           
-          <code><a href="Thermal.UAV-Class.html">Thermal.UAV-Class</a></code> 
+          <code><a href="ThermalUAV-Class.html">ThermalUAV-Class</a></code> 
         </dt>
-        <dd>Class "Thermal.UAV"</dd>
+        <dd>Class "ThermalUAV"</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="basic-functions">Basic functions<a class="anchor" aria-label="anchor" href="#basic-functions"></a></h3>
+      <p class="section-desc"></p><p>The basic steps in the image-based workflow, create, correct and export</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="tuav_cameras.html">tuav_cameras()</a></code> 
+        </dt>
+        <dd>A list of supported cameras</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_create.html">tuav_create()</a></code> 
+        </dt>
+        <dd>Get all the necessary info and create a ThermalUAV object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_correct.html">tuav_correct()</a></code> 
+        </dt>
+        <dd>Computes image-level corrections</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_export.html">tuav_export()</a></code> 
+        </dt>
+        <dd>Export thermal data as TIFF files</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_emis.html">tuav_emis()</a></code> 
+        </dt>
+        <dd>Spatial emissivity correction</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_report.html">tuav_report()</a></code> 
+        </dt>
+        <dd>Make a TheRmalUAV report</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="position-functions">Position functions<a class="anchor" aria-label="anchor" href="#position-functions"></a></h3>
+      <p class="section-desc"></p><p>Calculate, view and optimize camera locations</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="tuav_loc.html">tuav_loc()</a></code> 
+        </dt>
+        <dd>Get information on camera locations</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_view.html">tuav_view()</a></code> 
+        </dt>
+        <dd>Plot cameras/image extents on an interactive map</dd>
+      </dl><dl><dt>
+          
+          <code><a href="coreg_prep.html">coreg_prep()</a></code> 
+        </dt>
+        <dd>Prepare data for co-registration</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_coreg.html">tuav_coreg()</a></code> 
+        </dt>
+        <dd>Co-register locations with another camera</dd>
+      </dl></div><div class="section level2">
+      
+      <h3 id="cleaning-functions">Cleaning functions<a class="anchor" aria-label="anchor" href="#cleaning-functions"></a></h3>
+      <p class="section-desc"></p><p>Clean thermal datasets based on overlap and or sharpness</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="tuav_sharp.html">tuav_sharp()</a></code> 
+        </dt>
+        <dd>Estimates image sharpness</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_sharp_thresh.html">tuav_sharp_thresh()</a></code> 
+        </dt>
+        <dd>Get sharpness threshold</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_persec.html">tuav_persec()</a></code> 
+        </dt>
+        <dd>Keep the best image(s) per second</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_reduc.html">tuav_reduc()</a></code> 
+        </dt>
+        <dd>Clean the dataset based on overlap or sharpness</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tuav_smooth.html">tuav_smooth()</a></code> 
+        </dt>
+        <dd>Smooths thermal data</dd>
+      </dl></div><div class="section level2">
+      <h2 id="orthomosaic-based-workflow">Orthomosaic-based workflow<a class="anchor" aria-label="anchor" href="#orthomosaic-based-workflow"></a></h2>
+      
+      <p class="section-desc"></p><p>Correct brightnesstemperature orthomosaics</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="ortho_correct.html">ortho_correct()</a></code> 
+        </dt>
+        <dd>Atmospheric and emissivity correction for othomosaics</dd>
+      </dl></div><div class="section level2">
+      <h2 id="extra-s">Extra’s<a class="anchor" aria-label="anchor" href="#extra-s"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions that do not directly belong to a workflow, but support or improve inderstanding</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="tuav_dji.html">tuav_dji()</a></code> 
+        </dt>
+        <dd>Thermal SDK from DJI: corrections using DJI's algorithm</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dji_init.html">dji_init()</a></code> 
+        </dt>
+        <dd>Set the right environment to work with python in the background</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sim_correct.html">sim_correct()</a></code> 
+        </dt>
+        <dd>Simulating the correction</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

@@ -6,11 +6,21 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+## 1. Overview
+
 The goal of theRmalUAV is to clean and correct raw thermal UAV data.
 
-## Installation
+There are two workflows that can be followed:
 
-### theRmalUAV
+1)   **Image-based Workflow:** to perform corrections at image level
+2)   **Orthomosaic-based Workflow:** to perform corrections on an
+    orthomosaic containing uncorrected brightness temperatures
+
+<img src="./man/figures/Workflow_both.png" width="100%" />
+
+## 2. Installation
+
+#### theRmalUAV
 
 theRmalUAV is not on CRAN (yet). You can install the development version
 of `theRmalUAV` from GitHub:
@@ -34,7 +44,7 @@ After RTools is installed, you can install `theRmalUAV` from GitHub
 remotes::install_github("christophemetsu/theRmalUAV")
 ```
 
-### Dependent Packages
+#### Dependent Packages
 
 `theRmalUAV` requires several dependent packages, including fs,
 progress, rmarkdown, svDialogs, terra, tiff, and others (see the
@@ -45,7 +55,7 @@ from the ‘Packages’ pane in RStudio) then run
 remotes::install_github(“christophemetsu/theRmalUAV”,
 dependencies=FALSE).
 
-#### exiftool
+##### exiftool
 
 To read the EXIF data from the image files, `theRmalUAV` requires an
 external command line tool called ‘exiftool’.
@@ -70,13 +80,13 @@ Alternately, you can install exiftool manually by downloading it from
 a folder on the path (e.g, c:) and rename the executable file from
 exiftool(-k).exe to exiftool.exe.
 
-## Supported thermal sensors
+## 3. Supported thermal sensors
 
 To obtain a table of available thermal sensor which you can use, run
-`T_uav_sensors()` with no argument. If your sensor is not listed, you
-may submit an issue on GitHub to have it added. For details see the help
-page (?T_uav_sensor) or contact the package author.
+`tuav_cameras()` with no argument. If your sensor is not listed, you may
+submit an issue on GitHub to have it added. For details see the help
+page (?tuav_cameras) or contact the package author.
 
 ``` r
-T_uav_sensors()
+tuav_cameras()
 ```

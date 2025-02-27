@@ -1,23 +1,23 @@
-# #' Estimates image sharpness
-# #'
-# #' @description
-# #' `T_uav_est_sharp()` estimates sharpness of the thermal images.
-# #'
-# #' @param thermal_uav Thermal.UAV object retrieved by previous functions (e.g.: `T_uav_info()`). If Thermal.Data is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
-# #' @return This function returns an updated Thermal.UAV object containing a vector with the sharpness for each image.
-T_uav_est_sharp <- function(thermal_uav){
+#' Estimates image sharpness
+#'
+#' @description
+#' \code{\link[=tuav_sharp]{tuav_sharp()}} estimates sharpness of the thermal images.
+#'
+#' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}}). If ThermalData is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
+#' @return This function returns an updated \code{\link[=ThermalUAV-Class]{ThermalUAV}} object containing a vector with the sharpness for each image.
+tuav_sharp <- function(thermal_uav){
 
   suppressWarnings({
     # Check class structure of thermal_uav
-    if (!isa(thermal_uav, "Thermal.UAV")){
-      stop(paste0("The provided parameter thermal_uav is not of class Thermal.UAV \n"))
+    if (!isa(thermal_uav, "ThermalUAV")){
+      stop(paste0("The provided parameter thermal_uav is not of class ThermalUAV \n"))
     }
     # Thermal TSharp: compile sharpness info about all the tiffs
     len <- thermal_uav@Info@dataset_length
     TSharp <- rep(NA, len)
-    if (length(thermal_uav@Thermal.Data) != 0){
-      if (length(thermal_uav@Thermal.Data) != len){
-        stop(paste0("Length of Thermal.Data is not equal to the length of images \n"))
+    if (length(thermal_uav@ThermalData) != 0){
+      if (length(thermal_uav@ThermalData) != len){
+        stop(paste0("Length of ThermalData is not equal to the length of images \n"))
       }
     }
     pb <- progress::progress_bar$new(
@@ -25,10 +25,10 @@ T_uav_est_sharp <- function(thermal_uav){
       total = len
     )
     for (i in 1:len) {
-      if (length(thermal_uav@Thermal.Data) == 0){
+      if (length(thermal_uav@ThermalData) == 0){
         matrix <- tiff::readTIFF(paste0(thermal_uav@Info@path, thermal_uav@Info@images[i]), as.is = TRUE)
       } else {
-        matrix <- thermal_uav@Thermal.Data[[i]]
+        matrix <- thermal_uav@ThermalData[[i]]
       }
       # Calculate gradient
       siz <- dim(matrix)
@@ -64,7 +64,7 @@ T_uav_est_sharp <- function(thermal_uav){
       Gx_norm <- (Gx_abs - min)/(max - min)
       Gy_norm <- (Gy_abs - min)/(max - min)
       S <- sqrt(Gx_norm^2 + Gy_norm^2)
-      TSharp[i] <- 5* sum(S) / length(Gx_norm)
+      TSharp[i] <- sum(S) / length(Gx_norm)
       pb$tick()
     }
   })
@@ -75,27 +75,27 @@ T_uav_est_sharp <- function(thermal_uav){
 #' Get sharpness threshold
 #'
 #' @description
-#' `T_uav_clean_thresh()` estimates sharpness by iteratively asking whether an image is sharp enough, until it is sharp enough. The goal is to set your own sharpness threshold which is used in the image reduction function.
+#' \code{\link[=tuav_sharp_thresh]{tuav_sharp_thresh()}} estimates sharpness by iteratively asking whether an image is sharp enough, until it is sharp enough. The goal is to set your own sharpness threshold which is used in the image reduction function.
 #'
-#' @param thermal_uav Thermal.UAV object retrieved by previous functions (e.g.: `T_uav_info()`). If Thermal.Data is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
-#' @return This function returns a sharpness value which can be set as threshold in the `T_uav_clean_reduc()` function
+#' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}}). If ThermalData is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
+#' @return This function returns a sharpness value which can be set as threshold in the \code{\link[=tuav_reduc]{tuav_reduc()}} function
 #' @export
-T_uav_clean_thresh <- function(thermal_uav){
+tuav_sharp_thresh <- function(thermal_uav){
 
   suppressWarnings({
     # Check class structure of thermal_uav
-    if (!isa(thermal_uav, "Thermal.UAV")){
-      stop(paste0("The provided parameter thermal_uav is not of class Thermal.UAV \n"))
+    if (!isa(thermal_uav, "ThermalUAV")){
+      stop(paste0("The provided parameter thermal_uav is not of class ThermalUAV \n"))
     }
     # Check if sharpness is already calculated
     if (length(thermal_uav@Sharpness@Tsharp) == 0){
-      thermal_uav <- T_uav_est_sharp(thermal_uav)
+      thermal_uav <- tuav_sharp(thermal_uav)
       TSharp <- thermal_uav@Sharpness@Tsharp
     } else {
       TSharp <- thermal_uav@Sharpness@Tsharp
     }
     # show images and prompt whether it is sharp enough
-    if (length(thermal_uav@Thermal.Data) == 0){
+    if (length(thermal_uav@ThermalData) == 0){
       answ <- "no"
       Q <- 3
       while (answ == "no") {
@@ -118,7 +118,7 @@ T_uav_clean_thresh <- function(thermal_uav){
         warning("off")
         Thresh <- stats::quantile(TSharp, probs = Q/100, na.rm = TRUE)
         IDEdge <- which.min(abs(TSharp - Thresh))
-        rast <- terra::rast(thermal_uav@Thermal.Data[[IDEdge]])
+        rast <- terra::rast(thermal_uav@ThermalData[[IDEdge]])
         grDevices::dev.new()
         terra::plot(rast)
         answ <- svDialogs::dlg_message("Is this image sharp enough?", "yesno")$res
@@ -132,27 +132,29 @@ T_uav_clean_thresh <- function(thermal_uav){
   return(Thresh)
 }
 
-#' Keeps the best image per second
+#' Keep the best image(s) per second
 #'
 #' @description
-#' `T_uav_clean_persec()` ranks all images within 1 second based on sharpness and keeps x sharpest images. This function is primarily for streaming/filming thermal cameras like the ThermalCapture. The goal is to reduce the number of images before further processing.
+#' \code{\link[=tuav_persec]{tuav_persec()}} ranks all images within 1 second based on sharpness and keeps x sharpest images. This function is primarily for streaming/filming thermal cameras like the ThermalCapture. The goal is to reduce the number of images before further processing.
 #'
-#' @param thermal_uav Thermal.UAV object retrieved by previous functions (e.g.: `T_uav_info()`)
+#' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}})
 #' @param number_keep (numerical) the number of images you want to keep per second (default = 1)
 #' @param remove (logical) use TRUE to delete the images for your local disk space, default is FALSE where images are simple replaced in a subfolder called "Removed by img_persec"
-#' @return an updated Thermal.UAV object and (re)moves the least sharp images
+#' @return an updated \code{\link[=ThermalUAV-Class]{ThermalUAV}} object and (re)moves the least sharp images
 #' @export
-T_uav_clean_persec <- function(thermal_uav, number_keep = 1, remove = FALSE){
+tuav_persec <- function(thermal_uav,
+                        number_keep = 1,
+                        remove = FALSE){
 
   suppressWarnings({
     # Check class structure of thermal_uav
-    if (!isa(thermal_uav, "Thermal.UAV")){
-      stop(paste0("The provided parameter thermal_uav is not of class Thermal.UAV \n"))
+    if (!isa(thermal_uav, "ThermalUAV")){
+      stop(paste0("The provided parameter thermal_uav is not of class ThermalUAV \n"))
     }
     thermal_uav@Sharpness@number_keep <- number_keep
     # Check if sharpness is already calculated
     if (length(thermal_uav@Sharpness@Tsharp) == 0){
-      thermal_uav <- T_uav_est_sharp(thermal_uav)
+      thermal_uav <- tuav_sharp(thermal_uav)
       TSharp <- thermal_uav@Sharpness@Tsharp
     } else {
       TSharp <- thermal_uav@Sharpness@Tsharp
@@ -204,6 +206,9 @@ T_uav_clean_persec <- function(thermal_uav, number_keep = 1, remove = FALSE){
     if (length(terra::unwrap(thermal_uav@Position@extents_vector)) != 0){
       thermal_uav@Position@extents_vector <- terra::wrap(terra::unwrap(thermal_uav@Position@extents_vector)[KeepT == 1])
     }
+    if (length(thermal_uav@Position@opt_positions != 0)){
+      thermal_uav@Position@opt_positions <- thermal_uav@Position@opt_positions[KeepT == 1]
+    }
     thermal_uav@Position@overlap <- 0
     # Atmosphere
     if (length(thermal_uav@Atmosphere@T_air) != 0){
@@ -213,9 +218,9 @@ T_uav_clean_persec <- function(thermal_uav, number_keep = 1, remove = FALSE){
       thermal_uav@Atmosphere@omega <- thermal_uav@Atmosphere@omega[KeepT == 1]
       thermal_uav@Atmosphere@Tau_atm <- thermal_uav@Atmosphere@Tau_atm[KeepT == 1]
     }
-    # Thermal.Data
-    if (length(thermal_uav@Thermal.Data) != 0){
-      thermal_uav@Thermal.Data <- thermal_uav@Thermal.Data[[KeepT == 1]]
+    # ThermalData
+    if (length(thermal_uav@ThermalData) != 0){
+      thermal_uav@ThermalData <- thermal_uav@ThermalData[[KeepT == 1]]
     }
     # (Re)move files
     if (remove == TRUE){
@@ -234,7 +239,7 @@ T_uav_clean_persec <- function(thermal_uav, number_keep = 1, remove = FALSE){
     stop_no_images <- thermal_uav@Info@dataset_length
     no_images_removed <- start_no_images - stop_no_images
     # end of function
-    thermal_uav@Sharpness@T_uav_clean_persec <- "Yes"
+    thermal_uav@Sharpness@tuav_persec <- "Yes"
     thermal_uav@Sharpness@img_persec_remove <- no_images_removed
     message("Number of images (re)moved: ", no_images_removed)
     return(thermal_uav)
@@ -244,32 +249,36 @@ T_uav_clean_persec <- function(thermal_uav, number_keep = 1, remove = FALSE){
 #' Clean the dataset based on overlap or sharpness
 #'
 #' @description
-#' `T_uav_clean_reduc()` reduces the thermal dataset, either based on sharpness or minimal desired overlap. NOTE: if extents are not yet calculated, this function will automatically calculate it.
+#' \code{\link[=tuav_reduc]{tuav_reduc()}} reduces the thermal dataset, either based on sharpness or minimal desired overlap. NOTE: if extents are not yet calculated, this function will automatically calculate it.
 #'
-#' @param thermal_uav Thermal.UAV object retrieved by previous functions (e.g.: `T_uav_info()`). If Thermal.Data is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
+#' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}}). If ThermalData is empty, the raw TIFFs are loaded directly from the folder containing the tiff files.
 #' @param method the method you want to choose for image reduction. This can be "Overlap" to reduce the dataset based on a minimal overlap (the final targetted overlap will be around `min_overlap`) or "Sharpness" to remove unsharp images (based on `sharpness_threshold`).
 #' @param min_overlap (numerical) the targetted overlap (0-1) for the "Overlap" method or the criteria to acertain a minimal overlap in case of a large part of consecutive unsharp images. Default is 0.80
-#' @param sharpness_threshold (numerical) the threshold to decide if an image is sharp or unsharp. Default is 0.25
+#' @param sharpness_threshold (numerical) the threshold to decide if an image is sharp or unsharp. Default is 0.05
 #' @param remove (logical) use TRUE to delete the images for your local disk space. Default is FALSE where images are simple replaced in a subfolder called "Removed by img_reduc"
-#' @return This function returns an updated (reduced) Thermal.UAV object and (re)moves the least sharp images
+#' @return This function returns an updated (reduced) \code{\link[=ThermalUAV-Class]{ThermalUAV}} object and (re)moves the least sharp images
 #' @export
-T_uav_clean_reduc <- function(thermal_uav, method = "Overlap", min_overlap = 0.80, sharpness_threshold = 0.25, remove = FALSE){
+tuav_reduc <- function(thermal_uav,
+                       method = "Overlap",
+                       min_overlap = 0.80,
+                       sharpness_threshold = 0.05,
+                       remove = FALSE){
 
   suppressWarnings({
     # Check class structure of thermal_uav
-    if (!isa(thermal_uav, "Thermal.UAV")){
-      stop(paste0("The provided parameter thermal_uav is not of class Thermal.UAV \n"))
+    if (!isa(thermal_uav, "ThermalUAV")){
+      stop(paste0("The provided parameter thermal_uav is not of class ThermalUAV \n"))
     }
     # Check if sharpness is already calculated
     if (length(thermal_uav@Sharpness@Tsharp) == 0){
-      thermal_uav <- T_uav_est_sharp(thermal_uav)
+      thermal_uav <- tuav_sharp(thermal_uav)
       TSharp <- thermal_uav@Sharpness@Tsharp
     } else {
       TSharp <- thermal_uav@Sharpness@Tsharp
     }
     # Check if extents are already calculated
     if (length(terra::unwrap(thermal_uav@Position@extents_vector)) == 0){
-      thermal_uav <- T_uav_pos_sensor(thermal_uav, extent = TRUE, overlap = FALSE, export = FALSE)
+      thermal_uav <- tuav_loc(thermal_uav, extent = TRUE, overlap = FALSE, export = FALSE)
     }
     # Number of images at start of function
     start_no_images <- thermal_uav@Info@dataset_length
@@ -483,6 +492,9 @@ T_uav_clean_reduc <- function(thermal_uav, method = "Overlap", min_overlap = 0.8
     if (length(thermal_uav@Position@extents_vector) != 0){
       thermal_uav@Position@extents_vector <- thermal_uav@Position@extents_vector[keepID == 1]
     }
+    if (length(thermal_uav@Position@opt_positions != 0)){
+      thermal_uav@Position@opt_positions <- thermal_uav@Position@opt_positions[KeepT == 1]
+    }
     thermal_uav@Position@overlap <- 0
     # Atmosphere
     if (length(thermal_uav@Atmosphere@T_air) != 0){
@@ -492,9 +504,9 @@ T_uav_clean_reduc <- function(thermal_uav, method = "Overlap", min_overlap = 0.8
       thermal_uav@Atmosphere@omega <- thermal_uav@Atmosphere@omega[keepID == 1]
       thermal_uav@Atmosphere@Tau_atm <- thermal_uav@Atmosphere@Tau_atm[keepID == 1]
     }
-    # Thermal.Data
-    if (length(thermal_uav@Thermal.Data) != 0){
-      thermal_uav@Thermal.Data <- thermal_uav@Thermal.Data[[keepID == 1]]
+    # ThermalData
+    if (length(thermal_uav@ThermalData) != 0){
+      thermal_uav@ThermalData <- thermal_uav@ThermalData[[keepID == 1]]
     }
     # (Re)move files
     if (remove == TRUE){
@@ -530,7 +542,7 @@ T_uav_clean_reduc <- function(thermal_uav, method = "Overlap", min_overlap = 0.8
     # end of function
     stop_no_images <- thermal_uav@Info@dataset_length
     no_images_removed <- start_no_images - stop_no_images
-    thermal_uav@Sharpness@T_uav_clean_reduc <- "Yes"
+    thermal_uav@Sharpness@tuav_reduc <- "Yes"
     thermal_uav@Sharpness@img_reduc_remove <- no_images_removed
     message("Number of images (re)moved: ", no_images_removed)
     thermal_uav@Sharpness@Thresh <- sharpness_threshold

@@ -8,13 +8,6 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-This package is designed to correct thermal UAV data. It comprises data cleaning, image reduction, caluclating overlap, atmospheric corrections, accounting for temperature fluctuations during the flight, emissivity corrections ect. The corrected data will be stored as tiff-file with updated exifdata, ready to implement in commercial structure from motion softwares. It furthermore provides the opportunity to optimize thermal camera positions using coregistrated high resolution cameras.
-}
-\seealso{
-Useful links:
-\itemize{
-  \item \url{}
-}
-
+This package is designed to correct thermal UAV data. It comprises data cleaning, image reduction, caluclating overlap, atmospheric corrections, accounting for temperature fluctuations during the flight, emissivity corrections ect. The corrected data will be stored as tiff-file with updated exifdata, ready to implement in commercial photogrammetry softwares. It furthermore provides the opportunity to optimize thermal camera positions using coregistrated high resolution cameras.
 }
 \keyword{internal}
