@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
-  - ./figures/Workflow_orthomosaic_based_3.png
+  - ./figures/Workflow_Orthomosaic_based_3.png
   - ./figures/Ortho_brightT.png
   - ./figures/Ortho_LST.png
 ---
@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 In this article we will go over the orthomosaic-based workflow step by step. The orthomosaic-based workflow is intended to perform corrections on an orthomosaic containing uncorrected brightness temperatures and is presented in the Figure bellow. We will showcase these steps with an example using the Micasense Altum-PT camera. This camera collects tiff images in the blue, green, red, red-edge, near-infrared, as well as the thermal infrared range. The thermal data is stored as centikelvin. 
 
 ```{r, echo = F, figures-side, fig.show="hold",out.width="100%", dpi=300}
-knitr::include_graphics('./figures/Workflow_orthomosaic_based_3.png')
+knitr::include_graphics('./figures/Workflow_Orthomosaic_based_3.png')
 ```
 # 2. Load the necessary data
 
