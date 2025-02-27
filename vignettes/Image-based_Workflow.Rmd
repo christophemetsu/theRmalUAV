@@ -5,6 +5,14 @@ vignette: >
   %\VignetteIndexEntry{Image-based_Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - ./figures/Workflow_image_based_3.png
+  - ./figures/Im_dji_NDVI.png
+  - ./figures/Im_dji_LST.png
+  - ./figures/Im_dji_LST_emis.png
+  - ./figures/Im_teax_LC.png
+  - ./figures/Im_teax_LST.png
+  - ./figures/Im_teax_LST_corr.png
 ---
 
 <style>
@@ -44,7 +52,7 @@ When using DJI cameras in the image-based workflow, the package utilizes the DJI
 
 ## 2.1. Create a ThermalUAV object
 
-```{r, include = FALSE, warning=FALSE, error=FALSE, message=FALSE, results='hide'}
+```{r, include = FALSE, warning=FALSE, error=FALSE, message=FALSE, results='hide', eval = FALSE}
 dji_init()
 ```
 
@@ -151,44 +159,44 @@ In this example we will dive into a more advance case using the ThermalCapture 2
 
 As in section [2.1. Create a ThermalUAV object] we will create a ThermalUAV object using the function `tuav_create()`. The ThermalCapture line from TeAx, stores thermal data as a ".TMC" file. They provide a software called ThermoViewer to convert the TMC files into TIFF files containing the thermal data. This software provides the option to store the metadata of all images in ONE csv file. This csv file can be used as additional meta data in the `tuav_create()` function.
 
-```{r, include = TRUE, warning=FALSE, message=TRUE}
-# thermal_uav_teax <- tuav_create(path = "E:/Thermal_Project/Thermal_data_TeAx/",  
-#                                 camera = "ThermalCapture",                            
-#                                 meta_csv = "E:/Thermal_Project/Thermal_data_TeAx/Thermal_Project_meta.csv",                                 
-#                                 flight_height = 75)                            
+```{r, include = TRUE, warning=FALSE, message=TRUE, eval = FALSE}
+thermal_uav_teax <- tuav_create(path = "E:/Thermal_Project/Thermal_data_TeAx/",
+                                camera = "ThermalCapture",
+                                meta_csv = "E:/Thermal_Project/Thermal_data_TeAx/Thermal_Project_meta.csv",
+                                flight_height = 75)
 ```
 ## 3.2. Check and clean the data
 
 The data volume is quite high (16612 images) as you can see with the following code:
 
-```{r, include = TRUE, warning=FALSE, message=TRUE}
-# thermal_uav_teax@Info@dataset_length                           
+```{r, include = TRUE, warning=FALSE, message=TRUE, eval=FALSE}
+thermal_uav_teax@Info@dataset_length                           
 ```
 You can also check the visually where all these images are located in space using the following code:
-```{r, include = TRUE, warning=FALSE, message=TRUE, fig.show="hold",out.width="100%", dpi=300}
-# thermal_uav_teax_loc <- tuav_loc(thermal_uav_teax, 
-#                                  extent = TRUE,   # Calculate the image extents
-#                                  overlap = TRUE)  # Calculate the mean frontal overlap
-# 
-# thermal_uav_teax_loc@Position@overlap
-# tuav_view(thermal_uav_teax_loc, extent = TRUE)
+```{r, include = TRUE, warning=FALSE, message=TRUE, fig.show="hold",out.width="100%", dpi=300, eval = FALSE}
+thermal_uav_teax_loc <- tuav_loc(thermal_uav_teax,
+                                 extent = TRUE,   # Calculate the image extents
+                                 overlap = TRUE)  # Calculate the mean frontal overlap
+
+thermal_uav_teax_loc@Position@overlap
+tuav_view(thermal_uav_teax_loc, extent = TRUE)
 ```
 
 
 If all these images need to be converted, it might require a lot of computing power. Generally, we also don't need around 8 images per second, resulting in a mean frontal overlap of 98.7 %. This R package offers two functions to deal with data reduction. Either you keep a predefined amount of images per second using `tuav_persec()`, or you set a minimal threshold for overlap or sharpness with `tuav_reduc()`. You can call "?tuav_reduc" to get more information on the function's parameters. Here we will use the method overlap, which means the algorithm will select images to result in a frontal overlap of the given value (in this case 0.9 for a frontal overlap of 90%). The algorithm will only select images with enough quality (i.e. above the sharpness_threshold). If this latter requirement is not met, it will take the best option below this threshold to still ensure the minimal required overlap. In this case, it will provide a list on which images where kept, but do not meet the required quality checks. Lastly, you have the option to delete the images from your local storage (be careful with this option), or you can just move the images to a different folder (= DEFAULT).
 
-```{r, include = TRUE, warning=FALSE, message=TRUE}
-# thermal_uav_teax_clean <- tuav_reduc(thermal_uav_teax_loc,
-#                                      method = "Overlap",
-#                                      min_overlap = 0.9,
-#                                      sharpness_threshold = 0.05,
-#                                      remove = FALSE)
+```{r, include = TRUE, warning=FALSE, message=TRUE, eval = FALSE}
+thermal_uav_teax_clean <- tuav_reduc(thermal_uav_teax_loc,
+                                     method = "Overlap",
+                                     min_overlap = 0.9,
+                                     sharpness_threshold = 0.05,
+                                     remove = FALSE)
 ```
 You can see that the mean frontal overlap is reduced and visualize it with the interactive map:
 
-```{r, include = TRUE, warning=FALSE, message=TRUE, fig.show="hold",out.width="100%", dpi=300}
-# thermal_uav_teax_clean@Position@overlap
-# tuav_view(thermal_uav_teax_clean, extent = TRUE)
+```{r, include = TRUE, warning=FALSE, message=TRUE, fig.show="hold",out.width="100%", dpi=300, eval = FALSE}
+thermal_uav_teax_clean@Position@overlap
+tuav_view(thermal_uav_teax_clean, extent = TRUE)
 ```
 
 ## 3.3. Co-regsitration with Micasense Altum-PT 
@@ -199,7 +207,7 @@ The ThermalCapture 2.0 is a standalone camera with its own GPS and power supply 
 
 In Both cases we first need to call the `coreg_prep()` to prepare the data in the right format:
 
-```{r, include = TRUE, warning=FALSE, message=TRUE, results='hide', eval=FALSE}
+```{r, include = TRUE, warning=FALSE, message=TRUE, results='hide', eval=FALSE, eval = FALSE}
 opt_cameras <- coreg_prep(img_path = "E:/Thermal_Project/data_Micasense/",
                           SfM_option = "Agisoft Metashape",
                           opt_camera_path = "E:/Thermal_Project/Reference_Cameras_Thermal_Project.txt",
@@ -209,7 +217,7 @@ opt_cameras <- coreg_prep(img_path = "E:/Thermal_Project/data_Micasense/",
 ```
 This should have returned a data.frame with 9 variables. We can now use this in the `tuav_coreg()` function.
 
-```{r, include = TRUE, warning=FALSE, message=TRUE, results='hide', eval=FALSE}
+```{r, include = TRUE, warning=FALSE, message=TRUE, results='hide', eval=FALSE, eval = FALSE}
 thermal_uav_teax_coreg <- tuav_coreg(thermal_uav_teax_clean,
                                      opt_cameras = opt_cameras,
                                      rig_offset = c(0, 0, 0, 0, 0, 0),
@@ -221,9 +229,9 @@ Optionally you can call the `tuav_view()` function again on the latest ThermalUA
 
 If you are satisfied with the performed corrections, we can now move to the conversion of the brightness temperature to LST. Note, the cleaning functions can also be performed after this step, but it will require much longer computation time. As explained in [2.2. Conversion to LST], we use the function `tuav_correct()` to perform the conversion.
 
-During this rather long flight, weather variables were collected simultaneous at a 5-second interval rate using the Kestrel 5500. This data first needs to be loaded an put into the right format.
+During this rather long flight, weather variables were collected simultaneous at a 5-second interval rate using the Kestrel 5500. This data first needs to be loaded an put into the right format. you can chekc the structure using the `str()` function. Datetime, can be easily converted to POSIXct using `as.POSIXct()`.
 
-```{r, include = TRUE, warning = FALSE}
+```{r, include = TRUE, warning = FALSE, eval = FALSE}
 Kestrel <- read.csv("E:/Thermal_Project/Weather_data/Kestrel_tair_relhum.csv")
 str(Kestrel)      # datetime is as character -> convert to POSIXct
 Kestrel$datetime <- as.POSIXct(Kestrel$datetime, tz = "UTC")

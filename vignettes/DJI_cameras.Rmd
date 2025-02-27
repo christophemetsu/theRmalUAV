@@ -5,6 +5,8 @@ vignette: >
   %\VignetteIndexEntry{DJI_cameras}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - ./figures/DJI_LST.png
 ---
 
 <style>

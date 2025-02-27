@@ -5,6 +5,10 @@ vignette: >
   %\VignetteIndexEntry{Orthomosaic-based_Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - ./figures/Workflow_orthomosaic_based_3.png
+  - ./figures/Ortho_brightT.png
+  - ./figures/Ortho_LST.png
 ---
 
 <style>
