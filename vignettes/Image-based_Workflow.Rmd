@@ -48,13 +48,9 @@ library(theRmalUAV)
 ```
 Once this is complete we can call the functions embedded in the R package
 
-When using DJI cameras in the image-based workflow, the package utilizes the DJI Thermal SDK functionality provided by DJI. The package uses python in the background to access the libraries provided by DJI. Therefore, in order to work with DJI cameras you first need to do some initial steps. Please read the `vignette("DJI_cameras")` first before proceeding.
+When using DJI cameras in the image-based workflow, the package utilizes the DJI Thermal SDK functionality provided by DJI. The package uses a c++ function `get_temp_dirp_cpp()` (through Rcpp) in the background to access the libraries provided by DJI. 
 
 ## 2.1. Create a ThermalUAV object
-
-```{r, include = FALSE, warning=FALSE, error=FALSE, message=FALSE, results='hide', eval = FALSE}
-dji_init()
-```
 
 The image-based workflow always starts with creating a ThermalUAV object using the function `tuav_create()`. Here we will give the name "thermal_uav" to the ThermalUAV object. The path refers to the path on your pc to the folder containing the TIFF/jpg files, or path to 1 TIFF/jpg file. The camera name can be found by running the function `tuav_cameras()`. The flight_height is our case 75 meters. No external metadata dataframe is available so we set it to NA, this way only the meta data stored in exif will be used.
 ```{r, include = TRUE, warning=FALSE, message=TRUE, eval=FALSE}

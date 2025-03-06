@@ -1,7 +1,7 @@
 Package: theRmalUAV
 Type: Package
 Title: Clean and correct thermal UAV data
-Version: 0.1.0
+Version: 0.1.1
 Author: Christophe Metsu
 Maintainer: Christophe Metsu <christophe.metsu@kuleuven.be>
 Description: This package is designed to correct thermal UAV data. 
@@ -19,7 +19,7 @@ Imports:
     knitr,
     methods,
     progress,
-    reticulate,
+    Rcpp,
     rmarkdown,
     stats,
     stringr,
@@ -27,7 +27,7 @@ Imports:
     terra,
     tiff,
     utils
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -35,3 +35,5 @@ Depends:
     R (>= 2.10)
 VignetteBuilder: knitr
 URL: https://christophemetsu.github.io/theRmalUAV/
+LinkingTo: 
+    Rcpp

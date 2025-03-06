@@ -510,30 +510,6 @@ tuav_export <- function(thermal_uav,
   })
 }
 
-#' Set the right environment to work with python in the background
-#'
-#' @description
-#' \code{\link[=dji_init]{dji_init()}} initializes a virtual environment for python using \code{\link[reticulate]{reticulate}} which is needed to run the processing for the DJI cameras
-#'
-#' @param virtenv (character) the virtual environment you want to use, default is NA and will create a specified "r-theRmalUAV" environment.
-#' @export
-dji_init <- function(virtenv = NA){
-  if (is.na(virtenv) & !("r-theRmalUAV" %in% reticulate::virtualenv_list())){
-    reticulate::virtualenv_create(envname = "r-theRmalUAV")
-    virtenv <- "r-theRmalUAV"
-  } else if (is.na(virtenv) & ("r-theRmalUAV" %in% reticulate::virtualenv_list())){
-    virtenv <- "r-theRmalUAV"
-  } else if (!is.na(virtenv) & !(virtenv %in% reticulate::virtualenv_list())){
-    reticulate::virtualenv_create(envname = virtenv)
-  }
-
-  Sys.setenv(RETICULATE_PYTHON = paste0(Sys.getenv("HOME"),"/.virtualenvs/", virtenv))
-  Sys.setenv(VIRTUAL_ENV = paste0(Sys.getenv("HOME"),"/.virtualenvs/", virtenv))
-  reticulate::virtualenv_starter()
-  reticulate::import("numpy")
-  reticulate::import("ctypes")
-}
-
 methods::setClass("ThermalInfo", slots = c(path = "character", images = "character", exif = "ANY", camera = "character", camera_info = "data.frame",
                                            meta_df = "data.frame", TTime = c("POSIXct"), SubSecTime = "ANY", dataset_length = "numeric"))
 

@@ -1,3 +1,10 @@
+#' @useDynLib theRmalUAV, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
+#' @import Rcpp
+#' @importFrom Rcpp evalCpp
+NULL
+
+
 #' Computes image-level corrections
 #'
 #' @description
@@ -5,7 +12,7 @@
 #'
 #' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}})
 #' @param flight_height (numerical) the height between the camera and the OBJECT OF INTEREST. Can be a single value or a vector of the same length as the number of images. If not specified it will search for GPS altitude in the exif/meta data, or use the flight_height calculated in the \code{\link[=tuav_loc]{tuav_loc()}} function
-#' @param T_air (numerical) the air temperature in °C during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided the mean temperature of the images will be taken
+#' @param T_air (numerical) the air temperature in deg C during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided the mean temperature of the images will be taken
 #' @param rel_hum (numerical) the relative humidity in \% during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing relative humidity data ("rel_hum") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided a value of 50\% is assumed across the entire flight.
 #' @param T_bg (numerical) the background temperature in Kelvin, temperature measured from the aluminium panel. If not recorded set to NA and the parameter will be estimated using ("T_air"), in this case, you need to specify whether the sky was clear ("SKC" = TRUE) or overcast ("SKC" = FALSE).
 #' @param SKC (logical) if the conditions were sky clear, set to TRUE, if there was an overcast set to FALSE (default = TRUE), only needed when T_bg is not specified.
@@ -87,7 +94,7 @@ tuav_correct <- function(thermal_uav,
   gc()
   # Now all the tiffs represent the brightness temperature (@camera T) in Kelvin
   # Now get all the necessary atm info:
-  # Air temperature in °C ----
+  # Air temperature in deg C ----
   if (anyNA(T_air)){
     T_air <- rep(NA, len)
     for (i in 1:len){
@@ -96,13 +103,13 @@ tuav_correct <- function(thermal_uav,
     thermal_uav@Atmosphere@T_air_mode <- 1
   } else if (length(T_air) == 1){
     if (!is.numeric(T_air)){
-      stop(paste0("T_air is not numeric, please provide the air temperature a °C \n"))
+      stop(paste0("T_air is not numeric, please provide the air temperature a deg C \n"))
     }
     T_air <- rep(T_air, len)
     thermal_uav@Atmosphere@T_air_mode <- 2
   } else if (length(T_air) == len){
     if (!is.numeric(T_air)){
-      stop(paste0("T_air is not numeric, please provide the air temperature a °C \n"))
+      stop(paste0("T_air is not numeric, please provide the air temperature a deg C \n"))
     }
     if (anyNA(T_air)){
       stop(paste0("T_air is missing some data points, please update the air temperature dataset \n"))
@@ -156,7 +163,7 @@ tuav_correct <- function(thermal_uav,
     thermal_uav@Atmosphere@T_air_mode <- 4
   }
   if (min(T_air) > 200){
-    warning("Extremely high minimum temperature, please note that the air temperature should be given in °C")
+    warning("Extremely high minimum temperature, please note that the air temperature should be given in deg C")
   }
   thermal_uav@Atmosphere@T_air <- T_air
   # Relative Humidity in % ----
@@ -502,7 +509,7 @@ tuav_emis <- function(thermal_orig,
 #'
 #' @param thermal_uav \code{\link[=ThermalUAV-Class]{ThermalUAV}} object retrieved by previous functions (e.g.: \code{\link[=tuav_create]{tuav_create()}}). Note in order to smooth the thermal data, tuav_correct should be ran at first
 #' @param method One of the two methods: (i) "T_air" the dataset is smoothed based on a high resolution air temperature dataset or (ii) "image" smoothing is done based on the average image temperature, default is "image"
-#' @param T_air For method "T_air": the air temperature in °C during the flight. Can be a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If already provided in \code{\link[=tuav_correct]{tuav_correct()}}, you can leave it black here. Default is NA
+#' @param T_air For method "T_air": the air temperature in  deg C during the flight. Can be a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If already provided in \code{\link[=tuav_correct]{tuav_correct()}}, you can leave it black here. Default is NA
 #' @param smooth_length (numerical) is the amount of images that will be taken into account to smooth the temperature. Default is NA where the smooth length is the number of overlapping images. The smooth length is ignored for method "T_air".
 #' @return This function returns an updated \code{\link[=ThermalUAV-Class]{ThermalUAV}} object with smoothed ThermalData
 #' @export
@@ -539,7 +546,7 @@ tuav_smooth <- function(thermal_uav,
       }
     } else if (length(T_air) == thermal_uav@Info@dataset_length){
       if (!is.numeric(T_air)){
-        stop(paste0("T_air is not numeric, please provide the air temperature a °C \n"))
+        stop(paste0("T_air is not numeric, please provide the air temperature a deg C \n"))
       }
       if (anyNA(T_air)){
         stop(paste0("T_air is missing some data points, please update the air temperature dataset \n"))
@@ -662,7 +669,7 @@ tuav_smooth <- function(thermal_uav,
 #' @param thermal_ortho Map (\code{\link[terra:SpatRaster]{SpatRaster}}) or path to geotiff file (chr) containing brightness temperatures
 #' @param temp Indicate in which scale the "thermal_ortho" map represents the temperatures. Use "K" for Kelvin and "C" for degree Celcius.
 #' @param flight_height (numerical) the height between the camera and the OBJECT OF INTEREST expressed in meters.
-#' @param T_air (numerical) the air temperature in °C during the flight. If NA it will use a trimmed mean of the temperatures in the thermal_ortho map.
+#' @param T_air (numerical) the air temperature in  deg C during the flight. If NA it will use a trimmed mean of the temperatures in the thermal_ortho map.
 #' @param rel_hum (numerical) the relative humidity in \% during the flight. If not provided a value of 50\% is assumed.
 #' @param T_bg (numerical) the background temperature in Kelvin, temperature measured from the aluminium panel. If not recorded set to NA and the parameter will be estimated using ("T_air"), in this case, you need to specify whether the sky was clear ("SKC" = TRUE) or overcast ("SKC" = FALSE).
 #' @param SKC (logical) if the conditions were sky clear, set to TRUE, if there was an overcast set to FALSE (default = TRUE), only needed when T_bg is not specified.
@@ -680,7 +687,7 @@ tuav_smooth <- function(thermal_uav,
 ortho_correct <- function(thermal_ortho = thermal_ortho,
                           temp = "C",
                           flight_height = NA, # In meters
-                          T_air = NA, # In °C
+                          T_air = NA, # In deg C
                           rel_hum = NA, # In %
                           T_bg = NA, # In Kelvin
                           SKC = TRUE,
@@ -929,6 +936,11 @@ tuav_dji <- function(thermal_uav,
   if (!isa(thermal_uav, "ThermalUAV")){
     stop(paste0("The provided parameter thermal_uav is not of class ThermalUAV \n"))
   }
+  # Ensure Rcpp is available
+  if (!("Rcpp" %in% .packages())){
+    # Load Rcpp
+    loadNamespace("Rcpp")
+  }
   # Check for the parameters
   # Distance
   if (is.na(obj_dist)){
@@ -956,15 +968,12 @@ tuav_dji <- function(thermal_uav,
   }
   # refl_temp
   if (is.na(refl_temp)){
-    warning(paste0("The refl_temp parameter was not provided: using default value of 23 °C \n"))
+    warning(paste0("The refl_temp parameter was not provided: using default value of 23 deg C \n"))
     refl_temp <- 23
   }
   if (refl_temp < -40 | refl_temp > 500){
     stop(paste0("The refl_temp parameter is not within the specified range of [-40 - 500] \n"))
   }
-  # Get path to python script
-  py_path <- fs::path_package("python", "dji_dirp2.py", package = "theRmalUAV")
-  reticulate::source_python(py_path)
   # Get path to libdirp.dll containing the DJI correction functions from DJI_Thermal_SDK developers software: https://www.dji.com/be/downloads/softwares/dji-thermal-sdk
   system.info <- Sys.info()
   system <- tolower(as.character(system.info["sysname"]))
@@ -975,35 +984,35 @@ tuav_dji <- function(thermal_uav,
   if (!(system %in% c("windows", "linux")) | !(architecture %in% c("x64", "x86"))){
     stop(paste("This functionality is not (yet) supported for:", system, architecture))
   }
-  # In case the thermal_uav has contains 1 image
+  # In case the thermal_uav contains 1 image
   if (thermal_uav@Info@dataset_length == 1){
     filepath_image <- paste0(thermal_uav@Info@path, thermal_uav@Info@images)
-    temp_dirp2 <- get_temp_dirp2(filepath_image = filepath_image,
-                                 filepath_dll = dll_path,
-                                 image_height = as.integer(thermal_uav@Info@camera_info$img_height_def),
-                                 image_width = as.integer(thermal_uav@Info@camera_info$img_width_def),
-                                 object_distance = obj_dist,
-                                 relative_humidity = rel_hum,
-                                 emissivity = emissivity,
-                                 reflected_apparent_temperature = refl_temp)
+    temp_dirp <- get_temp_dirp_cpp(filepath_image = filepath_image,
+                                    filepath_dll = dll_path,
+                                    image_height = as.integer(thermal_uav@Info@camera_info$img_height_def),
+                                    image_width = as.integer(thermal_uav@Info@camera_info$img_width_def),
+                                    object_distance = obj_dist,
+                                    relative_humidity = rel_hum,
+                                    emissivity = emissivity,
+                                    reflected_apparent_temperature = refl_temp)
   } else {
     # In case of map and multiple images
     # create empty list to stack the different matrices
-    temp_dirp2 <- list()
+    temp_dirp <- list()
     pb <- progress::progress_bar$new(
       format = "Correcting images: [:bar] :percent ETA: :eta",
       total = thermal_uav@Info@dataset_length
     )
     for (i in 1:thermal_uav@Info@dataset_length){
       filepath_image <- paste0(thermal_uav@Info@path, thermal_uav@Info@images[i])
-      temp_dirp2[[i]] <- get_temp_dirp2(filepath_image = filepath_image,
-                                        filepath_dll = dll_path,
-                                        image_height = as.integer(thermal_uav@Info@camera_info$img_height_def),
-                                        image_width = as.integer(thermal_uav@Info@camera_info$img_width_def),
-                                        object_distance = obj_dist,
-                                        relative_humidity = rel_hum,
-                                        emissivity = emissivity,
-                                        reflected_apparent_temperature = refl_temp)
+      temp_dirp[[i]] <- get_temp_dirp_cpp(filepath_image = filepath_image,
+                                           filepath_dll = dll_path,
+                                           image_height = as.integer(thermal_uav@Info@camera_info$img_height_def),
+                                           image_width = as.integer(thermal_uav@Info@camera_info$img_width_def),
+                                           object_distance = obj_dist,
+                                           relative_humidity = rel_hum,
+                                           emissivity = emissivity,
+                                           reflected_apparent_temperature = refl_temp)
       pb$tick()
     }
   }
@@ -1130,7 +1139,7 @@ tuav_dji <- function(thermal_uav,
       utils::write.csv(exif_export, file = paste0(export_path, "exif.csv"), row.names = FALSE, sep = ",")
       # In case of 1 image
       if (thermal_uav@Info@dataset_length == 1){
-        my_matrix <- ceiling(100*(temp_dirp2 + 273.15))
+        my_matrix <- ceiling(100*(temp_dirp + 273.15))
         my_matrix_int <- matrix(as.integer(my_matrix), nrow = as.numeric(dim(my_matrix)[1]), ncol = as.numeric(dim(my_matrix)[2]))/65535
         tiff::writeTIFF(my_matrix_int, exif_export$SourceFile, bits.per.sample = 16, compression = "none")
       } else {
@@ -1141,7 +1150,7 @@ tuav_dji <- function(thermal_uav,
           total = len
         )
         for (i in 1:len){
-          my_matrix <- ceiling(100*(temp_dirp2[[i]] + 273.15))
+          my_matrix <- ceiling(100*(temp_dirp[[i]] + 273.15))
           my_matrix_int <- matrix(as.integer(my_matrix), nrow = as.numeric(dim(my_matrix)[1]), ncol = as.numeric(dim(my_matrix)[2]))/65535
           tiff::writeTIFF(my_matrix_int, exif_export$SourceFile[i], bits.per.sample = 16, compression = "none")
           pb$tick()
@@ -1158,7 +1167,7 @@ tuav_dji <- function(thermal_uav,
 
   # If you want the matrix/list of matrices returned in your R environment, could be not wanted if you directly export the images, default = TRUE
   if (return){
-    return(temp_dirp2)
+    return(temp_dirp)
   }
 }
 
@@ -1171,7 +1180,7 @@ tuav_dji <- function(thermal_uav,
 #'
 #' @param T_bright Brightness temperature (in Kelvin) that you want to convert. This can either be a single value, a vector or a matrix or \code{\link[terra:SpatRaster]{SpatRaster}} object
 #' @param flight_height (numerical) the height between the camera and the OBJECT OF INTEREST. Default is 50 m
-#' @param T_air (numerical) the air temperature in °C during the flight. Default is 25°C
+#' @param T_air (numerical) the air temperature in  deg C during the flight. Default is 25 deg C
 #' @param rel_hum (numerical) the relative humidity in \% during the flight. Default is 70 \%
 #' @param T_bg (numerical) the background temperature in Kelvin, temperature measured from the aluminium panel. If not recorded set to NA and the parameter will not be accounted for.
 #' @param emiss (numerical) the emissivity, here by default an average for plants is given (0.985)
@@ -1201,7 +1210,7 @@ sim_correct <- function(T_bright,
     }, error=function(e){paste0("ERROR : T_air is not numeric \noriginal error: ",conditionMessage(e), " \n")})
   }
   if (T_air > 260){
-    warning("T_air seems extremely high; T_air should be provided in °C \n")
+    warning("T_air seems extremely high; T_air should be provided in deg C \n")
   }
   # rel_hum
   if (!is.numeric(rel_hum)){

@@ -19,7 +19,7 @@ tuav_correct(
 
 \item{flight_height}{(numerical) the height between the camera and the OBJECT OF INTEREST. Can be a single value or a vector of the same length as the number of images. If not specified it will search for GPS altitude in the exif/meta data, or use the flight_height calculated in the \code{\link[=tuav_loc]{tuav_loc()}} function}
 
-\item{T_air}{(numerical) the air temperature in °C during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided the mean temperature of the images will be taken}
+\item{T_air}{(numerical) the air temperature in deg C during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided the mean temperature of the images will be taken}
 
 \item{rel_hum}{(numerical) the relative humidity in \% during the flight. Can be a single value, a vector of same length as the number of images or a data.frame containing relative humidity data ("rel_hum") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If not provided a value of 50\% is assumed across the entire flight.}
 

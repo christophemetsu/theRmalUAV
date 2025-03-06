@@ -18,7 +18,7 @@ sim_correct(
 
 \item{flight_height}{(numerical) the height between the camera and the OBJECT OF INTEREST. Default is 50 m}
 
-\item{T_air}{(numerical) the air temperature in °C during the flight. Default is 25°C}
+\item{T_air}{(numerical) the air temperature in  deg C during the flight. Default is 25 deg C}
 
 \item{rel_hum}{(numerical) the relative humidity in \% during the flight. Default is 70 \%}
 

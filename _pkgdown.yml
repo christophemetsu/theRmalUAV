@@ -43,8 +43,8 @@ reference:
     understanding
   contents:
     - tuav_dji
-    - dji_init
     - sim_correct
+    - get_temp_dirp_cpp
 articles:
 - title: Examples of the different workflows
   contents:

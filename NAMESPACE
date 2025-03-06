@@ -1,1 +1,4 @@
 exportPattern("^[[:alpha:]]+")
+useDynLib(theRmalUAV, .registration = TRUE)
+export(get_temp_dirp_cpp)
+importFrom(Rcpp, evalCpp)

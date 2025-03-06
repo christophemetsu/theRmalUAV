@@ -30,7 +30,7 @@ ortho_correct(
 
 \item{flight_height}{(numerical) the height between the camera and the OBJECT OF INTEREST expressed in meters.}
 
-\item{T_air}{(numerical) the air temperature in °C during the flight. If NA it will use a trimmed mean of the temperatures in the thermal_ortho map.}
+\item{T_air}{(numerical) the air temperature in  deg C during the flight. If NA it will use a trimmed mean of the temperatures in the thermal_ortho map.}
 
 \item{rel_hum}{(numerical) the relative humidity in \% during the flight. If not provided a value of 50\% is assumed.}
 

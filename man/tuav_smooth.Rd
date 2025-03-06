@@ -11,7 +11,7 @@ tuav_smooth(thermal_uav, method = "image", T_air = NA, smooth_length = NA)
 
 \item{method}{One of the two methods: (i) "T_air" the dataset is smoothed based on a high resolution air temperature dataset or (ii) "image" smoothing is done based on the average image temperature, default is "image"}
 
-\item{T_air}{For method "T_air": the air temperature in °C during the flight. Can be a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If already provided in \code{\link[=tuav_correct]{tuav_correct()}}, you can leave it black here. Default is NA}
+\item{T_air}{For method "T_air": the air temperature in  deg C during the flight. Can be a vector of same length as the number of images or a data.frame containing temperature data ("T_air") and datetime ("datetime") in UTC ("\%d.\%m.\%Y \%H:\%M:\%OS" format). If already provided in \code{\link[=tuav_correct]{tuav_correct()}}, you can leave it black here. Default is NA}
 
 \item{smooth_length}{(numerical) is the amount of images that will be taken into account to smooth the temperature. Default is NA where the smooth length is the number of overlapping images. The smooth length is ignored for method "T_air".}
 }
