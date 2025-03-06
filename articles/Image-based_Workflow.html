@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">theRmalUAV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,10 +94,8 @@ our environment:</p>
 package</p>
 <p>When using DJI cameras in the image-based workflow, the package
 utilizes the DJI Thermal SDK functionality provided by DJI. The package
-uses python in the background to access the libraries provided by DJI.
-Therefore, in order to work with DJI cameras you first need to do some
-initial steps. Please read the <code><a href="../articles/DJI_cameras.html">vignette("DJI_cameras")</a></code>
-first before proceeding.</p>
+uses a c++ function <code><a href="../reference/get_temp_dirp_cpp.html">get_temp_dirp_cpp()</a></code> (through Rcpp) in
+the background to access the libraries provided by DJI.</p>
 <div class="section level3">
 <h3 id="create-a-thermaluav-object">2.1. Create a ThermalUAV object<a class="anchor" aria-label="anchor" href="#create-a-thermaluav-object"></a>
 </h3>

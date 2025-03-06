@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">theRmalUAV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,10 +67,10 @@
 body {
 text-align: justify}
 </style>
-<p>In this article we will discuss the prerequisites to use the R
-package for processing DJI thermal cameras.</p>
+<p>In this article we will discuss the workflow if you just want to use
+the Thermal SDK functionallity of DJI.</p>
 <div class="section level2">
-<h2 id="setup-and-initialize">1. Setup and initialize<a class="anchor" aria-label="anchor" href="#setup-and-initialize"></a>
+<h2 id="some-background">1. Some background<a class="anchor" aria-label="anchor" href="#some-background"></a>
 </h2>
 <p>The thermal images from DJI cameras are stored in their own specific
 way. For a start they are written as JPG files instead of tiff.
@@ -80,18 +80,11 @@ software. However, DJI released a Thermal SDK with Dynamic Link
 Libraries which can be incorporated into your code to process DJI
 thermal images. On big remark: these can only be accessed on a Windows
 or Linux system… In this R package the Thermal SDK is built in as well.
-To access the libraries, the package runs a python script in the
-background. So, before we can process DJI data, you first need to <a href="https://www.python.org/downloads/" class="external-link">download and install a version
-of Python</a> on your pc.</p>
-<p>Once Python is installed, a virtual environment should be established
-in order to work with python through R. The package is dependent on the
-package <code>Reticulate</code> to link R with Python. You can hust run
-the function <code><a href="../reference/dji_init.html">dji_init()</a></code> to initialize this virtual
-environment.</p>
+To access the libraries, the package runs a c++ function
+(<code><a href="../reference/get_temp_dirp_cpp.html">get_temp_dirp_cpp()</a></code>) in the background using
+<code>Rcpp</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://christophemetsu.github.io/theRmalUAV/">theRmalUAV</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/dji_init.html">dji_init</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-a-thermaluav">2. Create a ThermalUAV<a class="anchor" aria-label="anchor" href="#create-a-thermaluav"></a>
@@ -100,21 +93,20 @@ environment.</p>
 through <code><a href="../reference/tuav_cameras.html">tuav_cameras()</a></code>), you have two options: - Follow the
 image-based workflow - Process the data with the DJI IR Processing tool
 (dirp)</p>
-<p>In the first case I gladly refer to the vignette about the
-image-based workflow. In this article we discuss the second option. The
-DJI IR processing tool is built into the function
-<code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>. This function processes the data using the
-provided libraries from DJI. The input variables are thus the same as in
-their <a href="https://www.dji.com/be/downloads/softwares/dji-dtat" class="external-link">DJI
-Thermal Analysis Tool software</a>. To keep the geotags and facilitate
-the process, first a ThermalUAV object should be created before using
-the <code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>In the first case I gladly refer to the article about the image-based
+workflow. In this article we discuss the second option. The DJI IR
+processing tool is built into the function <code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>. This
+function processes the data using the provided libraries from DJI. The
+input variables are thus the same as in their <a href="https://www.dji.com/be/downloads/softwares/dji-dtat" class="external-link">DJI Thermal
+Analysis Tool software</a>. To keep the geotags and facilitate the
+process, first a ThermalUAV object should be created before using the
+<code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">thermal_uav_dji_M3T</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuav_create.html">tuav_create</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"E:/Thermal_Project/Thermal_data_dji/DJI_20240806165425_0078_T.JPG"</span>,</span>
 <span>                               <span class="co"># ThermalUAV objects can also consist of only 1 image if desired</span></span>
 <span>                               camera <span class="op">=</span> <span class="st">"DJI_M3T"</span>,</span>
 <span>                               meta_csv <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>                               flight_height <span class="op">=</span> <span class="fl">75</span><span class="op">)</span></span></code></pre></div>
+<span>                               flight_height <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="process-with-dji-ir-processing-tool">3. Process with DJI IR Processing tool<a class="anchor" aria-label="anchor" href="#process-with-dji-ir-processing-tool"></a>
@@ -122,17 +114,17 @@ the <code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>.</p>
 <p>Once this ThermalUAV object is created, you can call the function
 <code><a href="../reference/tuav_dji.html">tuav_dji()</a></code>. Please check carefully the range in which each
 parameter should be provided.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dji_M3T</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuav_dji.html">tuav_dji</a></span><span class="op">(</span><span class="va">thermal_uav_dji_M3T</span>,</span>
 <span>                    obj_dist <span class="op">=</span> <span class="fl">25</span>,      <span class="co"># limited to [1-25] in meter</span></span>
 <span>                    rel_hum <span class="op">=</span> <span class="fl">47.2</span>,     <span class="co"># should be between [20 - 100] in %</span></span>
-<span>                    emissivity <span class="op">=</span> <span class="fl">0.985</span>,</span>
-<span>                    refl_temp <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                    emissivity <span class="op">=</span> <span class="fl">0.985</span>, <span class="co"># Should be between [0.1 - 1]</span></span>
+<span>                    refl_temp <span class="op">=</span> <span class="fl">5</span>,      <span class="co"># Should be between [-40.0 to 500.0 deg C]</span></span>
 <span>                    return <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                    export <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                    export_path <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 <p>When processed, you can plot your image:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="va">LST_dji_M3T</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">dji_M3T</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LST_dji_M3T</span>, main <span class="op">=</span> <span class="st">"LST"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mappal.html" class="external-link">map.pal</a></span><span class="op">(</span><span class="st">"magma"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
