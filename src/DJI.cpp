@@ -2,8 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <windows.h>
 #include "DJI.h"
+
+#ifdef _WIN32
+  #include <windows.h>
+#else
+  #include <dlfcn.h>
+#endif
 
 using namespace std;
 using namespace Rcpp;
@@ -46,23 +51,35 @@ NumericMatrix get_temp_dirp_cpp(
     double reflected_apparent_temperature,
     std::string filepath_dll) {
 
+  // Cross-platform shared library loading
+#ifdef _WIN32
   HINSTANCE hDLL = LoadLibrary(filepath_dll.c_str());
   if (!hDLL) {
     stop("Failed to load DLL.");
   }
+  #define GET_FUNC_PTR GetProcAddress
+  #define CLOSE_LIBRARY FreeLibrary
+#else
+  void* hDLL = dlopen(filepath_dll.c_str(), RTLD_LAZY);
+  if (!hDLL) {
+    stop("Failed to load shared library: " + std::string(dlerror()));
+  }
+  #define GET_FUNC_PTR dlsym
+  #define CLOSE_LIBRARY dlclose
+#endif
 
-  auto dirp_create_from_rjpeg = (dirp_create_from_rjpeg_t)GetProcAddress(hDLL, "dirp_create_from_rjpeg");
-  auto dirp_destroy = (dirp_destroy_t)GetProcAddress(hDLL, "dirp_destroy");
-  auto dirp_get_rjpeg_version = (dirp_get_rjpeg_version_t)GetProcAddress(hDLL, "dirp_get_rjpeg_version");
-  auto dirp_get_rjpeg_resolution = (dirp_get_rjpeg_resolution_t)GetProcAddress(hDLL, "dirp_get_rjpeg_resolution");
-  auto dirp_get_measurement_params = (dirp_get_measurement_params_t)GetProcAddress(hDLL, "dirp_get_measurement_params");
-  auto dirp_set_measurement_params = (dirp_set_measurement_params_t)GetProcAddress(hDLL, "dirp_set_measurement_params");
-  auto dirp_measure_ex = (dirp_measure_ex_t)GetProcAddress(hDLL, "dirp_measure_ex");
+  auto dirp_create_from_rjpeg = (dirp_create_from_rjpeg_t)GET_FUNC_PTR(hDLL, "dirp_create_from_rjpeg");
+  auto dirp_destroy = (dirp_destroy_t)GET_FUNC_PTR(hDLL, "dirp_destroy");
+  auto dirp_get_rjpeg_version = (dirp_get_rjpeg_version_t)GET_FUNC_PTR(hDLL, "dirp_get_rjpeg_version");
+  auto dirp_get_rjpeg_resolution = (dirp_get_rjpeg_resolution_t)GET_FUNC_PTR(hDLL, "dirp_get_rjpeg_resolution");
+  auto dirp_get_measurement_params = (dirp_get_measurement_params_t)GET_FUNC_PTR(hDLL, "dirp_get_measurement_params");
+  auto dirp_set_measurement_params = (dirp_set_measurement_params_t)GET_FUNC_PTR(hDLL, "dirp_set_measurement_params");
+  auto dirp_measure_ex = (dirp_measure_ex_t)GET_FUNC_PTR(hDLL, "dirp_measure_ex");
 
   if (!dirp_create_from_rjpeg || !dirp_destroy || !dirp_get_rjpeg_version ||
       !dirp_get_rjpeg_resolution || !dirp_get_measurement_params ||
       !dirp_set_measurement_params || !dirp_measure_ex) {
-      FreeLibrary(hDLL);
+      CLOSE_LIBRARY(hDLL);
     stop("Failed to get function addresses.");
   }
 
@@ -72,7 +89,7 @@ NumericMatrix get_temp_dirp_cpp(
   DIRP_HANDLE handle;
   int32_t status = dirp_create_from_rjpeg(raw.data(), raw.size(), &handle);
   if (status != 0) {
-    FreeLibrary(hDLL);
+    CLOSE_LIBRARY(hDLL);
     stop("dirp_create_from_rjpeg error: " + std::to_string(status));
   }
 
@@ -96,7 +113,7 @@ NumericMatrix get_temp_dirp_cpp(
   dirp_measure_ex(handle, temp.data(), image_width * image_height * sizeof(float));
 
   dirp_destroy(handle);
-  FreeLibrary(hDLL);
+  CLOSE_LIBRARY(hDLL);
 
   NumericMatrix result(image_height, image_width);
   for (int i = 0; i < image_height; ++i) {
