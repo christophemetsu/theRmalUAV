@@ -17,6 +17,7 @@ Imports:
     fs,
     grDevices,
     knitr,
+    leaflet,
     methods,
     progress,
     Rcpp,
