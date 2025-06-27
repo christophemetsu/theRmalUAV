@@ -7,12 +7,14 @@
 #' @param camera (character) Indicate your camera name, you can check through \code{\link[=tuav_cameras]{tuav_cameras()}}
 #' @param meta_csv The Path to an additional meta data can be provided in the form of a csv, if not provided all info will be derived from exif data (which may limit some function options)
 #' @param flight_height (numerical) the height between the CAMERA and the GROUND. can be a single value or a vector of the same length as the number of images. If not specified it will search for GPS altitude in the exif/meta data
+#' @param tz The timezone of the flight. Important if you want to correct the data using a meteorological dataset. If not provided (default = NA), the function will use the system's timezone through Sys.timezone()
 #' @return A \code{\link[=ThermalUAV-Class]{ThermalUAV}} object with all the necessary information, serves as input in the following functions
 #' @export
 tuav_create <- function(path,
                         camera = "ThermalCapture",
                         meta_csv = NA,
-                        flight_height = NA){
+                        flight_height = NA,
+                        tz = NA){
 
   # Make first general class ThermalInfo
   thermal_uav <- invisible(methods::new("ThermalUAV"))
@@ -189,11 +191,20 @@ tuav_create <- function(path,
     thermal_uav@Info@exif[thermal_uav@Info@camera_info$tag_pitch] <- NAcheck(thermal_uav@Info@exif[thermal_uav@Info@camera_info$tag_pitch])
     thermal_uav@Info@exif[thermal_uav@Info@camera_info$tag_roll] <- NAcheck(thermal_uav@Info@exif[thermal_uav@Info@camera_info$tag_roll])
 
-    # Now the exif data should be ready to go for further analysis
+   # Now the exif data should be ready to go for further analysis
     # Get thermal time
     if (thermal_uav@Info@camera_info$date_time %in% names(thermal_uav@Info@exif)){
-      thermal_uav@Info@TTime <- as.POSIXct(dplyr::select(thermal_uav@Info@exif, thermal_uav@Info@camera_info$date_time)[[1]],
-                                           tryFormats = c("%d.%m.%Y %H:%M:%OS", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS", "%Y:%m:%d %H:%M:%OS"), tz = "UTC")
+      if (thermal_uav@Info@camera_info$make == "DJI"){
+        if (is.na(tz)){
+          tz <- Sys.timezone()
+        }
+        TTime_local <- as.POSIXct(dplyr::select(thermal_uav@Info@exif, thermal_uav@Info@camera_info$date_time)[[1]],
+                                  tryFormats = c("%d.%m.%Y %H:%M:%OS", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS", "%Y:%m:%d %H:%M:%OS"), tz = tz)
+        thermal_uav@Info@TTime <- as.POSIXct(TTime_local, tz = "UTC")
+      } else { # For other sensors where datetime is stored as UTC
+        thermal_uav@Info@TTime <- as.POSIXct(dplyr::select(thermal_uav@Info@exif, thermal_uav@Info@camera_info$date_time)[[1]],
+                                             tryFormats = c("%d.%m.%Y %H:%M:%OS", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS", "%Y:%m:%d %H:%M:%OS"), tz = "UTC")
+      }
     } else {
       warning("date_time tag in camera info not not found in exif data \n")
       thermal_uav@Info@TTime <- 0
