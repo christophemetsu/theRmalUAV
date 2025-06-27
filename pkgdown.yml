@@ -1,11 +1,11 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   DJI_cameras: DJI_cameras.html
   Image-based_Workflow: Image-based_Workflow.html
   Orthomosaic-based_Workflow: Orthomosaic-based_Workflow.html
-last_built: 2025-04-25T09:13Z
+last_built: 2025-06-27T11:56Z
 urls:
   reference: https://christophemetsu.github.io/theRmalUAV/reference
   article: https://christophemetsu.github.io/theRmalUAV/articles

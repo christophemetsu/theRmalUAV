@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Image-based Workflow • theRmalUAV</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -81,7 +80,7 @@ DJI Matrice 3T</a></li>
 <li><a href="#advanced-workflow-with-teax-thermalcapture-2.0">3.
 Advanced workflow with TeAx ThermalCapture 2.0</a></li>
 </ul>
-<p><img src="figures%2FWorkflow_image_based_3.png" width="100%"></p>
+<p><img src="figures/Workflow_image_based_3.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="basic-workflow-with-dji-matrice-3t">2. Basic workflow with DJI Matrice 3T<a class="anchor" aria-label="anchor" href="#basic-workflow-with-dji-matrice-3t"></a>
@@ -194,7 +193,7 @@ package</a> to work with rasters in R.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">NDVI</span>, main <span class="op">=</span> <span class="st">"NDVI"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LST</span>, main <span class="op">=</span> <span class="st">"Land surface temperature in °C"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mappal.html" class="external-link">map.pal</a></span><span class="op">(</span><span class="st">"magma"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures%2FIm_dji_NDVI.png" width="100%"><img src="figures%2FIm_dji_LST.png" width="100%"></p>
+<p><img src="figures/Im_dji_NDVI.png" width="100%"><img src="figures/Im_dji_LST.png" width="100%"></p>
 <p>Once the NDVI map is created, we can account for the emissivity in a
 spatially explicit way using the NDVI threshold method. In this example
 we are going to set tho following parameters, the emissivity values were
@@ -223,7 +222,7 @@ is slightly higher than that for shrubs. Careful interpretation of the
 water temperatures is thus required.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LST_emis</span>, main <span class="op">=</span> <span class="st">"LST corrected for ϵ"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mappal.html" class="external-link">map.pal</a></span><span class="op">(</span><span class="st">"magma"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures%2FIm_dji_LST_emis.png" width="100%"></p>
+<p><img src="figures/Im_dji_LST_emis.png" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -464,7 +463,7 @@ emissivity value.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LC</span>, main <span class="op">=</span> <span class="st">"Landcover"</span>, type <span class="op">=</span> <span class="st">"classes"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shrubs"</span>, <span class="st">"Mosses"</span>, <span class="st">"Trees"</span>, <span class="st">"Sandy soil"</span>, <span class="st">"Water"</span><span class="op">)</span>, legend <span class="op">=</span> <span class="st">"topleft"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LST_teax</span>, main <span class="op">=</span> <span class="st">"LST in °C"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mappal.html" class="external-link">map.pal</a></span><span class="op">(</span><span class="st">"magma"</span><span class="op">)</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>,<span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures%2FIm_teax_LC.png" width="100%"><img src="figures%2FIm_teax_LST.png" width="100%"></p>
+<p><img src="figures/Im_teax_LC.png" width="100%"><img src="figures/Im_teax_LST.png" width="100%"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">LST_teax_emis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tuav_emis.html">tuav_emis</a></span><span class="op">(</span>thermal_orig <span class="op">=</span> <span class="va">LST_teax</span>,</span>
 <span>                      thermal_uav <span class="op">=</span> <span class="va">thermal_uav_teax_smooth</span>, <span class="co"># The last ThermalUAV object, </span></span>
@@ -480,7 +479,7 @@ emissivity value.</p>
 is final and can be plotted or used for your analysis.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">LST_teax_emis</span>, main <span class="op">=</span> <span class="st">"LST corrected for ϵ"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/mappal.html" class="external-link">map.pal</a></span><span class="op">(</span><span class="st">"magma"</span><span class="op">)</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>,<span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figures%2FIm_teax_LST_corr.png" width="100%"></p>
+<p><img src="figures/Im_teax_LST_corr.png" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -508,7 +507,7 @@ Band: Analysis of Two Field Methods’, Remote Sensing of Environment,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
