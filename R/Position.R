@@ -383,18 +383,20 @@ tuav_coreg <- function(thermal_uav,
     # estimate positions
     for (i in 1:length(opt_thermal$FileName)) {
       tryCatch({
-        opt_thermal$X[i] <- stats::approx(x = numtime_opt, y =  opt_cameras$x,
-                                          xout = (numtime_thermal[i] - timediff))$y + rig_offset[1]/1000 # rig offset is in mm, utm in m
-        opt_thermal$Y[i] <- stats::approx(x = numtime_opt, y = opt_cameras$y,
-                                          xout = (numtime_thermal[i] - timediff))$y + rig_offset[2]/1000
-        opt_thermal$Z[i] <- stats::approx(x = numtime_opt, y = opt_cameras$z_est,
-                                          xout = (numtime_thermal[i] - timediff))$y + rig_offset[3]/1000
         opt_thermal$Yaw[i] <- stats::approx(x = numtime_opt, y = opt_cameras$yaw_est,
                                             xout = (numtime_thermal[i] - timediff))$y + rig_offset[4]
         opt_thermal$Pitch[i] <- stats::approx(x = numtime_opt, y = opt_cameras$pitch_est,
                                               xout = (numtime_thermal[i] - timediff))$y + rig_offset[5]
         opt_thermal$Roll[i] <- stats::approx(x = numtime_opt, y = opt_cameras$roll_est,
                                              xout = (numtime_thermal[i] - timediff))$y + rig_offset[6]
+        # Calculate the coordinates of the reference camera using interpollation
+        x_ref <- stats::approx(x = numtime_opt, y =  opt_cameras$x, xout = (numtime_thermal[i] - timediff))$y
+        y_ref <- stats::approx(x = numtime_opt, y = opt_cameras$y, xout = (numtime_thermal[i] - timediff))$y
+        # rig offset in x and y is in mm, utm in m (so divide by 1000), + adjust for turning using Yaw (coordinate reference system transformation)
+        opt_thermal$X[i] <- x_ref + ((rig_offset[2]/1000)*sin(opt_thermal$Yaw[i]) + (rig_offset[1]/1000)*cos(opt_thermal$Yaw[i])) 
+        opt_thermal$Y[i] <- y_ref + ((rig_offset[2]/1000)*cos(opt_thermal$Yaw[i]) - (rig_offset[1]/1000)*sin(opt_thermal$Yaw[i]))
+        opt_thermal$Z[i] <- stats::approx(x = numtime_opt, y = opt_cameras$z_est,
+                                          xout = (numtime_thermal[i] - timediff))$y + rig_offset[3]/1000
       }, error = function(e) {})
     }
     # check for NA's -> means
