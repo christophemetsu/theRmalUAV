@@ -317,9 +317,9 @@ tuav_correct <- function(thermal_uav,
 #' @param corrmap Map (\code{\link[terra:SpatRaster]{SpatRaster}}) or path to geotiff file (chr) for emissivity correction. This can either be a landcover map, an NDVI map or a emissivity map.
 #' @param method Indicate which variable the correction map provides. Use "LC" when landcover is provided, "NDVI" if you want to use the NDVI method or "EM" when emissivity is provided.
 #' @param write_Ts (logical) use TRUE if the corrected thermal map must be written. Default = FALSE
-#' @param filename_Ts the path and filename where the corrected thermal map should be stored. If NA, it is written in the thermal path with label "_emis_corr". This variable is only used if write_Ts = TRUE
+#' @param filename_Ts the path and filename where the corrected thermal map should be stored. If NA, it is written as "tuav_emis_TS_emis_corr.tif" in the project folder. In case the thermal_orig was provided as path to a file, the corrected TS will be written with label "_emis_corr" in the same folder. This variable is only used if write_Ts = TRUE
 #' @param write_emiss (logical) use TRUE if the emissivity map must be written. Default = FALSE
-#' @param filename_emiss the path and filename where the emissivity map should be stored. If NA, it is written in the thermal path with label "_emis". This variable is only used if write_emiss = TRUE
+#' @param filename_emiss the path and filename where the emissivity map should be stored. If NA, it is written as "tuav_emis_emissivity.tif" in the project folder. In case the thermal_orig was provided as path to a file, the emissvity map will be written with label "_emissivity" in the same folder. This variable is only used if write_emiss = TRUE
 #' @param NDVI_veg the NDVI value of vegetation. NDVI values above this threshold will receive an emissivity as defined in emiss_veg
 #' @param NDVI_soil the NDVI value of bare soil. NDVI values below this threshold will receive an emissivity as defined in emiss_soil
 #' @param emiss_veg the emissivity for vegetation, will be taken for an NDVI higher than NDVI_veg
@@ -346,6 +346,7 @@ tuav_emis <- function(thermal_orig,
   if (class(thermal_orig)[1] == "SpatRaster"){
     thermal_orig <- thermal_orig
   } else if (is.character(thermal_orig)){
+    thermal_path <- thermal_orig
     tryCatch({
       thermal_orig <- terra::rast(thermal_orig)
     }, error=function(e){paste0("ERROR : could not read 'thermal_orig' as path, if you want to provide thermal_orig as a path, please check your file path again  \noriginal error: ",conditionMessage(e), " \n")})
@@ -481,7 +482,11 @@ tuav_emis <- function(thermal_orig,
   # Now we have the corrected Ts => write_Ts it
   if (write_Ts == TRUE){
     if (is.na(filename_Ts)){
-      export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emis_corr.tif")
+      if (exists("thermal_path")){
+        export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emis_corr.tif")
+      } else {
+        export_path <- "tuav_emis_TS_emis_corr.tif")
+      }
     } else {
       export_path <- filename_Ts
     }
@@ -491,7 +496,11 @@ tuav_emis <- function(thermal_orig,
   }
   if (write_emiss == TRUE){
     if (is.na(filename_emiss)){
-      export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emiss.tif")
+      if (exists("thermal_path")){
+        export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emissivity.tif")
+      } else {
+        export_path <- "tuav_emis_emissivity.tif")
+      }
     } else {
       export_path <- filename_emiss
     }
