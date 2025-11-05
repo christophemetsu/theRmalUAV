@@ -480,12 +480,14 @@ tuav_emis <- function(thermal_orig,
     Ts <- Ts - 273.15
   }
   # Now we have the corrected Ts => write_Ts it
+  terra::names(emiss) <- "emissivity"
+  terra::names(Ts) <- "Ts"
   if (write_Ts == TRUE){
     if (is.na(filename_Ts)){
       if (exists("thermal_path")){
         export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emis_corr.tif")
       } else {
-        export_path <- "tuav_emis_TS_emis_corr.tif")
+        export_path <- "tuav_emis_TS_emis_corr.tif"
       }
     } else {
       export_path <- filename_Ts
@@ -499,7 +501,7 @@ tuav_emis <- function(thermal_orig,
       if (exists("thermal_path")){
         export_path <- paste0(substr(thermal_path, 1, nchar(thermal_path)-4), "_emissivity.tif")
       } else {
-        export_path <- "tuav_emis_emissivity.tif")
+        export_path <- "tuav_emis_emissivity.tif"
       }
     } else {
       export_path <- filename_emiss
