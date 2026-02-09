@@ -1,0 +1,176 @@
+# theRmalUAV
+
+## 1. Overview
+
+The goal of theRmalUAV is to clean and correct raw thermal UAV data.
+
+There are two workflows that can be followed:
+
+1.  **Image-based Workflow:** to perform corrections at image level
+2.  **Orthomosaic-based Workflow:** to perform corrections on an
+    orthomosaic containing uncorrected brightness temperatures
+
+![](./reference/figures/Workflow_both.png)
+
+## 2. Installation
+
+#### theRmalUAV
+
+theRmalUAV is not on CRAN (yet). You can install the development version
+of `theRmalUAV` from GitHub:
+
+Note: Windows users need RTools to build packages from source files
+(which is basically what you do when you install from GitHub). RTools is
+not a R package, rather its a set of utilities that you install
+separately. You can download and install RTools from
+<https://cran.r-project.org/bin/windows/Rtools/>. Alternately, you can
+install RTools from within R by running:
+
+``` r
+install.packages('installr')
+installr::install.Rtools()
+```
+
+After RTools is installed, you can install `theRmalUAV` from GitHub
+
+``` r
+## install.packages('remotes')
+remotes::install_github("christophemetsu/theRmalUAV")
+```
+
+#### Dependent Packages
+
+`theRmalUAV` requires several dependent packages, including fs,
+progress, rmarkdown, svDialogs, terra, tiff, and others (see the
+`DESCRIPTION` file for a complete list). Normally missing packages are
+installed at the same time, but if you get an error message about a
+missing package(s), install the dependent packages separately (i.e.,
+from the ‘Packages’ pane in RStudio) then run
+remotes::install_github(“christophemetsu/theRmalUAV”,
+dependencies=FALSE).
+
+##### exiftool
+
+To read the EXIF data from the image files, `theRmalUAV` requires an
+external command line tool called ‘exiftool’.
+
+UPDATE: As of version 1.6.0, you no longer need to manually install the
+exiftool command line utility. Rather you can install by running:
+
+``` r
+exiftoolr::install_exiftool()
+```
+
+To verify it worked:
+
+``` r
+exiftoolr::exif_version()
+#> Using ExifTool version 12.50
+#> [1] "12.50"
+```
+
+Alternately, you can install exiftool manually by downloading it from
+<http://www.sno.phy.queensu.ca/~phil/exiftool/>. Be sure to unzip it to
+a folder on the path (e.g, c:) and rename the executable file from
+exiftool(-k).exe to exiftool.exe.
+
+## 3. Supported thermal sensors
+
+To obtain a table of available thermal sensor which you can use, run
+[`tuav_cameras()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_cameras.md)
+with no argument. If your sensor is not listed, you may submit an issue
+on GitHub to have it added. For details see the help page
+(?tuav_cameras) or contact the package author.
+
+``` r
+tuav_cameras()
+```
+
+# Package index
+
+## Image-based workflow
+
+All the basic and additional functions within the image-based workflow
+
+### ThermalUAV Object
+
+S4 class in which the information and data is stored within the
+R-environment
+
+- [`ThermalUAV-Class`](https://christophemetsu.github.io/theRmalUAV/reference/ThermalUAV-Class.md)
+  : Class "ThermalUAV"
+
+### Basic functions
+
+The basic steps in the image-based workflow, create, correct and export
+
+- [`tuav_cameras()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_cameras.md)
+  : A list of supported cameras
+- [`tuav_create()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_create.md)
+  : Get all the necessary info and create a ThermalUAV object
+- [`tuav_correct()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_correct.md)
+  : Computes image-level corrections
+- [`tuav_export()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_export.md)
+  : Export thermal data as TIFF files
+- [`tuav_emis()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_emis.md)
+  : Spatial emissivity correction
+- [`tuav_report()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_report.md)
+  : Make a TheRmalUAV report
+
+### Position functions
+
+Calculate, view and optimize camera locations
+
+- [`tuav_loc()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_loc.md)
+  : Get information on camera locations
+- [`tuav_view()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_view.md)
+  : Plot cameras/image extents on an interactive map
+- [`coreg_prep()`](https://christophemetsu.github.io/theRmalUAV/reference/coreg_prep.md)
+  : Prepare data for co-registration
+- [`tuav_coreg()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_coreg.md)
+  : Co-register locations with another camera
+
+### Cleaning functions
+
+Clean thermal datasets based on overlap and or sharpness
+
+- [`tuav_sharp()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_sharp.md)
+  : Estimates image sharpness
+- [`tuav_sharp_thresh()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_sharp_thresh.md)
+  : Get sharpness threshold
+- [`tuav_persec()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_persec.md)
+  : Keep the best image(s) per second
+- [`tuav_reduc()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_reduc.md)
+  : Clean the dataset based on overlap or sharpness
+- [`tuav_smooth()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_smooth.md)
+  : Smooths thermal data
+
+## Orthomosaic-based workflow
+
+Correct at-sensor temperature orthomosaics
+
+- [`ortho_correct()`](https://christophemetsu.github.io/theRmalUAV/reference/ortho_correct.md)
+  : Atmospheric and emissivity correction for othomosaics
+
+## Extra’s
+
+Functions that do not directly belong to a workflow, but support or
+improve understanding
+
+- [`tuav_dji()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_dji.md)
+  : Thermal SDK from DJI: corrections using DJI's algorithm
+- [`sim_correct()`](https://christophemetsu.github.io/theRmalUAV/reference/sim_correct.md)
+  : Simulating the correction
+- [`get_temp_dirp_cpp()`](https://christophemetsu.github.io/theRmalUAV/reference/get_temp_dirp_cpp.md)
+  : Thermal Image Temperature Extraction
+
+# Articles
+
+### Examples of the different workflows
+
+- [Image-based
+  Workflow](https://christophemetsu.github.io/theRmalUAV/articles/Image-based_Workflow.md):
+- [Orthomosaic-based
+  Workflow](https://christophemetsu.github.io/theRmalUAV/articles/Orthomosaic-based_Workflow.md):
+- [DJI
+  cameras](https://christophemetsu.github.io/theRmalUAV/articles/DJI_cameras.md):
