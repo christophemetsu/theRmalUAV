@@ -1,7 +1,7 @@
 Package: theRmalUAV
 Type: Package
 Title: Clean and correct thermal UAV data
-Version: 0.1.1
+Version: 1.1.1
 Author: Christophe Metsu
 Maintainer: Christophe Metsu <christophe.metsu@kuleuven.be>
 Description: This package is designed to correct thermal UAV data. 
