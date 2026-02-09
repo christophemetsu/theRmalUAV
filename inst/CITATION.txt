@@ -1,0 +1,24 @@
+citHeader("To cite theRmalUAV in publications use:")
+
+bibentry(
+  bibtype = "Article",
+  author =  "Christophe Metsu, Wouter H. Maes, Sam Ottoy, Koenraad Van Meerbeek",
+  title = "theRmalUAV: An R package to clean and correct thermal UAV data for accurate land surface temperatures",
+  doi = "10.1111/2041-210x.70196",
+  year = 2026,
+  publisher = "Wiley",
+  volume = 17,
+  number = 2,
+  pages = 488-496,
+  journal = "Methods in Ecology and Evolution",
+  textVersion = "Metsu, C., Maes, W.H., Ottoy, S., Van Meerbeek, K. (2025) theRmalUAV: An R package to clean and correct thermal UAV data for accurate land surface temperatures. Methods in Ecology and Evolution, 17(2), pp. 488–496. https://doi.org/10.1111/2041-210X.70196")
+
+
+bibentry(bibtype = "misc",
+  author = "Christophe Metsu",
+  title = "theRmalUAV",
+  year= "2025",
+  doi = "10.5281/zenodo.17475729",
+  url = "https://github.com/christophemetsu/theRmalUAV",
+  textVersion = "Christophe Metsu (2025). theRmalUAV, doi:10.5281/zenodo.17475729. https://github.com/christophemetsu/theRmalUAV."
+)
