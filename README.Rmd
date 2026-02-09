@@ -13,11 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17475729.svg)](https://doi.org/10.5281/zenodo.17475729)
 
 # theRmalUAV
 
 <!-- badges: start -->
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17475729.svg)](https://doi.org/10.5281/zenodo.17475729)
+
 <!-- badges: end -->
 
 ## 1. Overview
@@ -84,7 +86,7 @@ To obtain a table of available thermal sensor which you can use, run `tuav_camer
 tuav_cameras()
 ```
 
-## Citation
+## 4. Citation
 
 If you use **theRmalUAV**, please cite:
 

@@ -4,6 +4,9 @@
 # theRmalUAV
 
 <!-- badges: start -->
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17475729.svg)](https://doi.org/10.5281/zenodo.17475729)
+
 <!-- badges: end -->
 
 ## 1. Overview
@@ -12,9 +15,9 @@ The goal of theRmalUAV is to clean and correct raw thermal UAV data.
 
 There are two workflows that can be followed:
 
-1)   **Image-based Workflow:** to perform corrections at image level
-2)   **Orthomosaic-based Workflow:** to perform corrections on an
-    orthomosaic containing uncorrected brightness temperatures
+1)  **Image-based Workflow:** to perform corrections at image level
+2)  **Orthomosaic-based Workflow:** to perform corrections on an
+    orthomosaic containing uncorrected at-sensor temperatures
 
 <img src="./man/figures/Workflow_both.png" width="100%" />
 
@@ -90,3 +93,12 @@ page (?tuav_cameras) or contact the package author.
 ``` r
 tuav_cameras()
 ```
+
+## 4. Citation
+
+If you use **theRmalUAV**, please cite:
+
+Metsu, C., Maes, W.H., Ottoy, S., Van Meerbeek, K. (2026). *theRmalUAV:
+An R package to clean and correct thermal UAV data for accurate land
+surface temperatures*. Methods in Ecology and Evolution, 17(2),
+pp. 488–496. <https://doi.org/10.1111/2041-210X.70196>.

@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "theRmalUAV: An R package to clean and correct thermal UAV data for accurate land surface temperatures",
+  author   = "Christophe Metsu, Wouter H. Maes, Sam Ottoy, Koenraad Van Meerbeek",
+  journal  = "Methods in Ecology and Evolution",
+  year     = 2026,
+  volume   = 17,
+  number   = 2,
+  pages    = "488-496"",
+  doi      = "10.1111/2041-210x.70196"
+)
