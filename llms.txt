@@ -8,7 +8,7 @@ There are two workflows that can be followed:
 
 1.  **Image-based Workflow:** to perform corrections at image level
 2.  **Orthomosaic-based Workflow:** to perform corrections on an
-    orthomosaic containing uncorrected brightness temperatures
+    orthomosaic containing uncorrected at-sensor temperatures
 
 ![](./reference/figures/Workflow_both.png)
 
@@ -85,6 +85,15 @@ on GitHub to have it added. For details see the help page
 ``` r
 tuav_cameras()
 ```
+
+## 4. Citation
+
+If you use **theRmalUAV**, please cite:
+
+Metsu, C., Maes, W.H., Ottoy, S., Van Meerbeek, K. (2026). *theRmalUAV:
+An R package to clean and correct thermal UAV data for accurate land
+surface temperatures*. Methods in Ecology and Evolution, 17(2),
+pp. 488–496. <https://doi.org/10.1111/2041-210X.70196>.
 
 # Package index
 
