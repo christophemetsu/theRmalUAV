@@ -43,10 +43,13 @@ tuav_correct <- function(thermal_uav,
     # For dji camera which will be read usingt he tuav_dji function
     if ((thermal_uav@Info@camera_info$make == "DJI") & (thermal_uav@Info@camera_info$filetype == "JPG")){
       raw_thermal_list <- tuav_dji(thermal_uav = thermal_uav,
-                                         obj_dist = 1,
-                                         rel_hum = 20, # Does not have any influence if obj_dist = 1 and emissivity = 1
-                                         emissivity = 1,
-                                         refl_temp = NA) # Does not have any influence if obj_dist = 1 and emissivity = 1
+                                   obj_dist = 1,
+                                   rel_hum = 20, # Does not have any influence if obj_dist = 1 and emissivity = 1
+                                   emissivity = 1,
+                                   refl_temp = NA) # Does not have any influence if obj_dist = 1 and emissivity = 1
+      if (len == 1){
+        raw_thermal_list <- list(raw_thermal_list) # tuav_dji does not output a list if only a single image is provided
+      }
     } else {
       # For other cameras that use tiff files
       for (i in 1:len) {
