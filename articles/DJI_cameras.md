@@ -18,6 +18,7 @@ To access the libraries, the package runs a c++ function
 in the background using `Rcpp`.
 
 ``` r
+
 library(theRmalUAV)
 ```
 
@@ -41,6 +42,7 @@ should be created before using the
 [`tuav_dji()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_dji.md).
 
 ``` r
+
 thermal_uav_dji_M3T <- tuav_create(path = "E:/Thermal_Project/Thermal_data_dji/DJI_20240806165425_0078_T.JPG",
                                # ThermalUAV objects can also consist of only 1 image if desired
                                camera = "DJI_M3T",
@@ -56,6 +58,7 @@ Please check carefully the range in which each parameter should be
 provided.
 
 ``` r
+
 dji_M3T <- tuav_dji(thermal_uav_dji_M3T,
                     obj_dist = 25,      # limited to [1-25] in meter
                     rel_hum = 47.2,     # should be between [20 - 100] in %
@@ -69,6 +72,7 @@ dji_M3T <- tuav_dji(thermal_uav_dji_M3T,
 When processed, you can plot your image:
 
 ``` r
+
 library(terra)
 LST_dji_M3T <- rast(dji_M3T)
 plot(LST_dji_M3T, main = "LST", col = map.pal("magma"))

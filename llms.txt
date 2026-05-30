@@ -27,6 +27,7 @@ separately. You can download and install RTools from
 install RTools from within R by running:
 
 ``` r
+
 install.packages('installr')
 installr::install.Rtools()
 ```
@@ -34,6 +35,7 @@ installr::install.Rtools()
 After RTools is installed, you can install `theRmalUAV` from GitHub
 
 ``` r
+
 ## install.packages('remotes')
 remotes::install_github("christophemetsu/theRmalUAV")
 ```
@@ -58,12 +60,14 @@ UPDATE: As of version 1.6.0, you no longer need to manually install the
 exiftool command line utility. Rather you can install by running:
 
 ``` r
+
 exiftoolr::install_exiftool()
 ```
 
 To verify it worked:
 
 ``` r
+
 exiftoolr::exif_version()
 #> Using ExifTool version 12.50
 #> [1] "12.50"
@@ -83,6 +87,7 @@ on GitHub to have it added. For details see the help page
 (?tuav_cameras) or contact the package author.
 
 ``` r
+
 tuav_cameras()
 ```
 

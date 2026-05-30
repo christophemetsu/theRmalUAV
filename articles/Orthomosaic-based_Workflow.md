@@ -23,6 +23,7 @@ blue, green, red, red-edge and near infra-red, as well as temperature in
 processing.
 
 ``` r
+
 library(theRmalUAV) # For thermal processing
 library(terra)      # For working with rasters
 
@@ -53,6 +54,7 @@ taken from [this paper](https://doi.org/10.1016/S0034-4257(96)00123-X):
 - ϵ_(soil) = 0.914 (Emissivity for sandsoils)
 
 ``` r
+
 LST_correct <- ortho_correct(thermal_ortho = TIR,
                              temp = "C",         # Thermal map is in °C
                              flight_height = 75, # in meter
@@ -74,6 +76,7 @@ returns a SpatRaster object. You can plot and export it as geotiff using
 the terra-package:
 
 ``` r
+
 plot(LST_correct, main = "Land surface temperature in °C", col = map.pal("magma"))
 
 writeRaster(LST_correct, "E:/Thermal_Project/LST_micasense.tif", overwrite = TRUE)

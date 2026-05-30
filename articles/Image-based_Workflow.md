@@ -21,6 +21,7 @@ First things first, before we start we need to load the R package in our
 environment:
 
 ``` r
+
 library(theRmalUAV)
 ```
 
@@ -49,6 +50,7 @@ is available so we set it to NA, this way only the meta data stored in
 exif will be used.
 
 ``` r
+
 thermal_uav <- tuav_create(path = "E:/Thermal_Project/Thermal_data_dji",
                            camera = "DJI_M3T",
                            meta_csv = NA,
@@ -73,6 +75,7 @@ obtain the background temperature `T_bg` in Kelvin, the brightness
 temperature of crumpled aluminium foil was used.
 
 ``` r
+
 thermal_uav_correct <- tuav_correct(thermal_uav,          
                                     flight_height = NA,   # in meters
                                     T_air = 28.7,         # in °C
@@ -93,6 +96,7 @@ want to store the data somewhere specific. Here we use the default ‘NA’,
 to create a new folder, names “corrected”, within the original folder.
 
 ``` r
+
 tuav_export(thermal_uav_correct,
             export_path = NA)     
 ```
@@ -101,6 +105,7 @@ Optionally, if desired, you can also create an HTM-report using
 [`tuav_report()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_report.md):
 
 ``` r
+
 tuav_report(thermal_uav_correct,
             project_name = "Thermal_Project_DJI",
             flight_name = "Flight 1",
@@ -131,6 +136,7 @@ orthomosaic is first loaded to create an NDVI map. You can use the
 in R.
 
 ``` r
+
 library(terra)
 
 # Load the MSP data as SpatRaster
@@ -159,6 +165,7 @@ paper](https://doi.org/10.1016/S0034-4257(96)00123-X): - NDVI_(veg) =
 ϵ_(soil) = 0.914 (Emissivity for sandsoils)
 
 ``` r
+
 LST_emis <- tuav_emis(thermal_orig = LST,
                       thermal_uav = thermal_uav_correct, # The last ThermalUAV object, 
                       temp = "C", # LST is in this case in °C
@@ -181,6 +188,7 @@ slightly higher than that for shrubs. Careful interpretation of the
 water temperatures is thus required.
 
 ``` r
+
 plot(LST_emis, main = "LST corrected for ϵ", col = map.pal("magma"))
 ```
 
@@ -213,6 +221,7 @@ file can be used as additional meta data in the
 function.
 
 ``` r
+
 thermal_uav_teax <- tuav_create(path = "E:/Thermal_Project/Thermal_data_TeAx/",
                                 camera = "ThermalCapture",
                                 meta_csv = "E:/Thermal_Project/Thermal_data_TeAx/Thermal_Project_meta.csv",
@@ -225,6 +234,7 @@ The data volume is quite high (16612 images) as you can see with the
 following code:
 
 ``` r
+
 thermal_uav_teax@Info@dataset_length                           
 ```
 
@@ -232,6 +242,7 @@ You can also check the visually where all these images are located in
 space using the following code:
 
 ``` r
+
 thermal_uav_teax_loc <- tuav_loc(thermal_uav_teax,
                                  extent = TRUE,   # Calculate the image extents
                                  overlap = TRUE)  # Calculate the mean frontal overlap
@@ -262,6 +273,7 @@ with this option), or you can just move the images to a different folder
 (= DEFAULT).
 
 ``` r
+
 thermal_uav_teax_clean <- tuav_reduc(thermal_uav_teax_loc,
                                      method = "Overlap",
                                      min_overlap = 0.9,
@@ -273,6 +285,7 @@ You can see that the mean frontal overlap is reduced and visualize it
 with the interactive map:
 
 ``` r
+
 thermal_uav_teax_clean@Position@overlap
 tuav_view(thermal_uav_teax_clean, extent = TRUE)
 ```
@@ -297,6 +310,7 @@ In Both cases we first need to call the
 to prepare the data in the right format:
 
 ``` r
+
 opt_cameras <- coreg_prep(img_path = "E:/Thermal_Project/data_Micasense/",
                           SfM_option = "Agisoft Metashape",
                           opt_camera_path = "E:/Thermal_Project/Reference_Cameras_Thermal_Project.txt",
@@ -311,6 +325,7 @@ this in the
 function.
 
 ``` r
+
 thermal_uav_teax_coreg <- tuav_coreg(thermal_uav_teax_clean,
                                      opt_cameras = opt_cameras,
                                      rig_offset = c(0, 0, 0, 0, 0, 0),
@@ -341,6 +356,7 @@ easily converted to POSIXct using
 [`as.POSIXct()`](https://rdrr.io/r/base/as.POSIXlt.html).
 
 ``` r
+
 Kestrel <- read.csv("E:/Thermal_Project/Weather_data/Kestrel_tair_relhum.csv")
 str(Kestrel)      # datetime is as character -> convert to POSIXct
 Kestrel$datetime <- as.POSIXct(Kestrel$datetime, tz = "UTC")
@@ -352,6 +368,7 @@ the
 function
 
 ``` r
+
 thermal_uav_teax_correct <- tuav_correct(thermal_uav_teax_coreg,          
                                     flight_height = NA,   # in meters
                                     T_air = Kestrel,      # data.frame in °C
@@ -367,11 +384,14 @@ influence of large fluctuations in T_air on the dataset. This smoothing
 correction is based on the following formula from [this
 paper](https://doi.org/10.3390/rs9050476):
 
-$$\begin{array}{r}
-{T_{S_{smooth}} = T_{s} - T_{air} + T_{air_{mean}}}
-\end{array}$$
+``` math
+\begin{align*}
+T_{S_{smooth}} = T_{s} - T_{air} + T_{air_{mean}} 
+\end{align*}
+```
 
 ``` r
+
 thermal_uav_teax_smooth <- tuav_smooth(thermal_uav_teax_correct,          
                                     method = "T_air")        
 ```
@@ -384,6 +404,7 @@ Metashape. Check section [2.3. Export and report](#export-and-report)
 for more details.
 
 ``` r
+
 tuav_export(thermal_uav_teax_smooth,
             export_path = NA)     
 ```
@@ -392,6 +413,7 @@ Optionally, if desired, you can also create an HTM-report using
 [`tuav_report()`](https://christophemetsu.github.io/theRmalUAV/reference/tuav_report.md):
 
 ``` r
+
 tuav_report(thermal_uav_teax_smooth,
             project_name = "Thermal_Project_TeAx",
             flight_name = "Flight 1",
@@ -429,6 +451,7 @@ two-column matrix containing the labels with their corresponding
 emissivity value.
 
 ``` r
+
 # Load the LC map as SpatRaster
 LC <- rast("E:/Thermal_Project/LC_TeAx.tif")
 # Create two-column matrix 
@@ -446,6 +469,7 @@ plot(LST_teax, main = "LST in °C", col = map.pal("magma"), range = c(15,30))
 ![](figures/Im_teax_LC.png)![](figures/Im_teax_LST.png)
 
 ``` r
+
 LST_teax_emis <- tuav_emis(thermal_orig = LST_teax,
                       thermal_uav = thermal_uav_teax_smooth, # The last ThermalUAV object, 
                       temp = "C", # LST is in this case in °C
@@ -462,6 +486,7 @@ After correcting for the spatially explicit emissivity, the LST map is
 final and can be plotted or used for your analysis.
 
 ``` r
+
 plot(LST_teax_emis, main = "LST corrected for ϵ", col = map.pal("magma"), range = c(15,30))
 ```
 
