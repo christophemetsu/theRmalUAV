@@ -240,7 +240,7 @@ coreg_prep <- function(img_path,
     opt_cameras_exif <- opt_cameras_exif[-which(grepl(".tif.aux.xml", opt_cameras_exif$FileName) == 1),]
   }
   # check which option is provided and extract the good position info
-  if (SfM_option == "Agisoft Metashape"){
+  if (!is.na(SfM_option)  && SfM_option == "Agisoft Metashape"){
     if (anyNA(opt_camera_path)){
       stop(paste0("csv/txt file not found, please provide the correct path to the csv file. \n"))
     }
@@ -259,7 +259,7 @@ coreg_prep <- function(img_path,
     } else {
       stop(paste0("opt_camera_path is not provided as .csv or .txt file, please provide the right extention"))
     }
-    #} else if (SfM_option == "Pix4DMapper") {
+    #} else if (!is.na(SfM_option)  && SfM_option == "Pix4DMapper") {
 
     ############################################################################
 
@@ -277,7 +277,9 @@ coreg_prep <- function(img_path,
   }
   # If cameras where used for calibration purposes during the flight, they occured twice in the export camera dataset
   dupl <- which(duplicated(opt_cameras_filtered$Label) == TRUE) # Function unique() didn't always work if two images were used in SfM software due to slightly different Yaw.
-  opt_cameras_filtered <- opt_cameras_filtered[-dupl,]
+  if (length(dupl) != 0){
+    opt_cameras_filtered <- opt_cameras_filtered[-dupl,]
+  }
   # Now we have all the necessary positional information. However we still need the exact time when these reference images are taken
   if (is.na(timezone)){
     timezone <- Sys.timezone()
@@ -393,7 +395,7 @@ tuav_coreg <- function(thermal_uav,
         x_ref <- stats::approx(x = numtime_opt, y =  opt_cameras$x, xout = (numtime_thermal[i] - timediff))$y
         y_ref <- stats::approx(x = numtime_opt, y = opt_cameras$y, xout = (numtime_thermal[i] - timediff))$y
         # rig offset in x and y is in mm, utm in m (so divide by 1000), + adjust for turning using Yaw (coordinate reference system transformation)
-        opt_thermal$X[i] <- x_ref + ((rig_offset[2]/1000)*sin(opt_thermal$Yaw[i]) + (rig_offset[1]/1000)*cos(opt_thermal$Yaw[i])) 
+        opt_thermal$X[i] <- x_ref + ((rig_offset[2]/1000)*sin(opt_thermal$Yaw[i]) + (rig_offset[1]/1000)*cos(opt_thermal$Yaw[i]))
         opt_thermal$Y[i] <- y_ref + ((rig_offset[2]/1000)*cos(opt_thermal$Yaw[i]) - (rig_offset[1]/1000)*sin(opt_thermal$Yaw[i]))
         opt_thermal$Z[i] <- stats::approx(x = numtime_opt, y = opt_cameras$z_est,
                                           xout = (numtime_thermal[i] - timediff))$y + rig_offset[3]/1000

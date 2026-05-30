@@ -483,8 +483,8 @@ tuav_emis <- function(thermal_orig,
     Ts <- Ts - 273.15
   }
   # Now we have the corrected Ts => write_Ts it
-  terra::names(emiss) <- "emissivity"
-  terra::names(Ts) <- "Ts"
+  names(emiss) <- "emissivity"
+  names(Ts) <- "Ts"
   if (write_Ts == TRUE){
     if (is.na(filename_Ts)){
       if (exists("thermal_path")){
@@ -540,6 +540,8 @@ tuav_smooth <- function(thermal_uav,
   if (length(thermal_uav@ThermalData) == 0){
     stop(paste0("ThermalData not found in thermal_uav, please first run the tuav_correct function \n"))
   }
+  # make smooth_length numeric, otherwise issues with NA
+  smooth_length <- as.numeric(smooth_length)
   # Smooth: choose method
   if (method == "image"){
     # check if the mean temperatures per tiff are already calculated:
@@ -665,7 +667,7 @@ tuav_smooth <- function(thermal_uav,
     thermal_uav@ThermalData[[i]] <- thermal_uav@ThermalData[[i]] + T_Corr[i]
     pb$tick()
   }
-  # end of funtion
+  # end of function
   thermal_uav@Smooth@T_smooth <- T_Corr
   thermal_uav@Smooth@smooth_length <- smooth_length
   thermal_uav@Smooth@method <- method
